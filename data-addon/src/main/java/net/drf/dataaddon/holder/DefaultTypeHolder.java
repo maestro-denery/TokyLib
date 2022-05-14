@@ -17,6 +17,7 @@ import com.lmax.disruptor.EventHandler;
 
 import net.drf.dataaddon.RegistryException;
 import net.drf.dataaddon.typeregistry.TypeRegistry;
+import net.kyori.adventure.key.Key;
 
 public class DefaultTypeHolder extends TypeHolder {
 	protected final Collection<TypeRegistry> typeRegistries = new ArrayList<>();
@@ -44,7 +45,7 @@ public class DefaultTypeHolder extends TypeHolder {
 	}
 
 	@Override
-	public void release(String identifier) {
+	public void release(Key identifier) {
 		release(getClassByID(identifier));
 	}
 
@@ -61,7 +62,7 @@ public class DefaultTypeHolder extends TypeHolder {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> Collection<T> getHeld(String identifier) {
+	public <T> Collection<T> getHeld(Key identifier) {
 		return (Collection<T>) instances.get(getClassByID(identifier));
 	}
 
@@ -104,7 +105,7 @@ public class DefaultTypeHolder extends TypeHolder {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> Class<T> getClassByID(String id) {
+	private <T> Class<T> getClassByID(Key id) {
 		return (Class<T>) typeRegistries.stream()
 				.map(typeRegistry -> typeRegistry.getRegistrableType(id)).findFirst().orElseThrow(() -> new RegistryException("There is no Registrables defined with given Id"));
 	}

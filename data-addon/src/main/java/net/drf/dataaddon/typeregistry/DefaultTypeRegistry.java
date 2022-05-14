@@ -16,10 +16,11 @@ import net.drf.dataaddon.RegistryException;
 import net.drf.dataaddon.annotation.AnnotationUtil;
 import net.drf.dataaddon.annotation.DataAddon;
 import net.drf.dataaddon.holder.TypeHolder;
+import net.kyori.adventure.key.Key;
 
 public class DefaultTypeRegistry extends TypeRegistry {
 	protected final Collection<TypeHolder> holders = new ArrayList<>();
-	protected final BiMap<String, Class<?>> registryBiMap = HashBiMap.create();
+	protected final BiMap<Key, Class<?>> registryBiMap = HashBiMap.create();
 
 	@Override
 	public void addRegistrableHolder(TypeHolder registrableHolder) {
@@ -29,7 +30,7 @@ public class DefaultTypeRegistry extends TypeRegistry {
 	@Override
 	public void register(Class<?> registrableType) {
 		AnnotationUtil.checkAnnotation(registrableType);
-		registryBiMap.put(registrableType.getAnnotation(DataAddon.class).identifier(), registrableType);
+		registryBiMap.put(Key.key(registrableType.getAnnotation(DataAddon.class).identifier()), registrableType);
 	}
 
 	@Override
@@ -62,19 +63,19 @@ public class DefaultTypeRegistry extends TypeRegistry {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T newInstance(String identifier) {
+	public <T> T newInstance(Key identifier) {
 		Class<T> registrableType = (Class<T>) registryBiMap.get(identifier);
 		return this.newInstance(registrableType);
 	}
 
 	@Override
-	public String getIdentifier(Class<?> registrableType) {
+	public Key getIdentifier(Class<?> registrableType) {
 		checkContains(registrableType);
 		return registryBiMap.inverse().get(registrableType);
 	}
 
 	@Override
-	public Class<?> getRegistrableType(String identifier) {
+	public Class<?> getRegistrableType(Key identifier) {
 		if (registryBiMap.containsKey(identifier)) {
 			return registryBiMap.get(identifier);
 		} else {
@@ -82,7 +83,7 @@ public class DefaultTypeRegistry extends TypeRegistry {
 		}
 	}
 
-	public BiMap<String, Class<?>> getInternalBiMap() {
+	public BiMap<Key, Class<?>> getInternalBiMap() {
 		return registryBiMap;
 	}
 	

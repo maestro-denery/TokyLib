@@ -3,10 +3,14 @@
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package dev.tablight.test;
+package net.drf.dataaddon.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import net.drf.dataaddon.test.dummies.DataAddonDummy;
+import net.drf.dataaddon.test.dummies.DataAddonDummyLookup;
+import net.drf.dataaddon.test.registries.DummyHolder;
+import net.drf.dataaddon.test.registries.DummyTypeRegistry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +20,7 @@ import net.drf.dataaddon.annotation.group.GroupContainer;
 import net.drf.dataaddon.holder.TypeHolder;
 import net.drf.dataaddon.storeload.StoreLoadController;
 import net.drf.dataaddon.typeregistry.TypeRegistry;
-import dev.tablight.test.dummies.DataAddonDummy;
-import dev.tablight.test.dummies.DataAddonDummyLookup;
-import dev.tablight.test.registries.DummyHolder;
-import dev.tablight.test.registries.DummyTypeRegistry;
-import dev.tablight.test.registries.subpkg.DummyController;
+import net.drf.dataaddon.test.registries.subpkg.DummyController;
 
 class StoreLoadControllerTest {
 	TypeRegistry typeRegistry;
@@ -32,8 +32,8 @@ class StoreLoadControllerTest {
 		DataAddonBootstrap dataAddonBootstrap = new DataAddonBootstrap();
 
 		dataAddonBootstrap.setContainer(new GroupContainer());
-		dataAddonBootstrap.bootstrapRegistries("dev.tablight.test.registries");
-		dataAddonBootstrap.bootstrapDataAddons("dev.tablight.test.dummies");
+		dataAddonBootstrap.bootstrapRegistries("net.drf.dataaddon.test.registries");
+		dataAddonBootstrap.bootstrapDataAddons("net.drf.dataaddon.test.dummies");
 
 		typeRegistry = dataAddonBootstrap.getRegistry(DummyTypeRegistry.class);
 		holder = dataAddonBootstrap.getRegistry(DummyHolder.class);

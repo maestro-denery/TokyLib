@@ -3,7 +3,7 @@
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package dev.tablight.test.registries;
+package net.drf.dataaddon.test.registries;
 
 import net.drf.dataaddon.annotation.group.Holder;
 import net.drf.dataaddon.holder.eventsourcing.ConcurrentEventTypeHolder;

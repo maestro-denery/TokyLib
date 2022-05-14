@@ -22,6 +22,7 @@ import net.drf.dataaddon.RegistryException;
 import net.drf.dataaddon.holder.HolderEvent;
 import net.drf.dataaddon.holder.TypeHolder;
 import net.drf.dataaddon.typeregistry.TypeRegistry;
+import net.kyori.adventure.key.Key;
 
 public class ConcurrentEventTypeHolder extends TypeHolder {
 	protected boolean running = false;
@@ -67,7 +68,7 @@ public class ConcurrentEventTypeHolder extends TypeHolder {
 	}
 
 	@Override
-	public void release(String identifier) {
+	public void release(Key identifier) {
 		release(getClassByID(identifier));
 	}
 
@@ -84,7 +85,7 @@ public class ConcurrentEventTypeHolder extends TypeHolder {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> Collection<T> getHeld(String identifier) {
+	public <T> Collection<T> getHeld(Key identifier) {
 		return (Collection<T>) instances.get(getClassByID(identifier));
 	}
 
@@ -128,7 +129,7 @@ public class ConcurrentEventTypeHolder extends TypeHolder {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> Class<T> getClassByID(String id) {
+	private <T> Class<T> getClassByID(Key id) {
 		return (Class<T>) typeRegistries.stream()
 				.map(typeRegistry -> typeRegistry.getRegistrableType(id)).findFirst().orElseThrow(() -> new RegistryException("There is no Registrables defined with given Id"));
 	}

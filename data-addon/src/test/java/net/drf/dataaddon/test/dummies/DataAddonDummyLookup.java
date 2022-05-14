@@ -3,7 +3,7 @@
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package dev.tablight.test.dummies;
+package net.drf.dataaddon.test.dummies;
 
 import java.util.Collection;
 import java.util.stream.Stream;

@@ -3,7 +3,7 @@
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package dev.tablight.test.registries.subpkg;
+package net.drf.dataaddon.test.registries.subpkg;
 
 import net.drf.dataaddon.annotation.group.Controller;
 import net.drf.dataaddon.storeload.DefaultStoreLoadController;

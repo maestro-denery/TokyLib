@@ -3,12 +3,16 @@
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package dev.tablight.test;
+package net.drf.dataaddon.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
+import net.drf.dataaddon.test.dummies.DataAddonDummy;
+import net.drf.dataaddon.test.registries.DummyHolder;
+import net.drf.dataaddon.test.registries.DummyTypeRegistry;
+import net.kyori.adventure.key.Key;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,9 +21,6 @@ import net.drf.dataaddon.DataAddonBootstrap;
 import net.drf.dataaddon.annotation.group.GroupContainer;
 import net.drf.dataaddon.holder.eventsourcing.ConcurrentEventTypeHolder;
 import net.drf.dataaddon.typeregistry.TypeRegistry;
-import dev.tablight.test.dummies.DataAddonDummy;
-import dev.tablight.test.registries.DummyHolder;
-import dev.tablight.test.registries.DummyTypeRegistry;
 
 class TypeHolderTest {
 	DataAddonBootstrap dataAddonBootstrap = new DataAddonBootstrap();
@@ -29,8 +30,8 @@ class TypeHolderTest {
 	@BeforeEach
 	void before() {
 		dataAddonBootstrap.setContainer(new GroupContainer());
-		dataAddonBootstrap.bootstrapRegistries("dev.tablight.test.registries");
-		dataAddonBootstrap.bootstrapDataAddons("dev.tablight.test.dummies");
+		dataAddonBootstrap.bootstrapRegistries("net.drf.dataaddon.test.registries");
+		dataAddonBootstrap.bootstrapDataAddons("net.drf.dataaddon.test.dummies");
 		typeRegistry = dataAddonBootstrap.getRegistry(DummyTypeRegistry.class);
 		holder = dataAddonBootstrap.getRegistry(DummyHolder.class);
 	}
@@ -61,7 +62,7 @@ class TypeHolderTest {
 	@Test
 	void checkGetID() {
 		var dummy = typeRegistry.newInstance(DataAddonDummy.class);
-		assertIterableEquals(List.of(dummy), holder.getHeld("dummy"));
+		assertIterableEquals(List.of(dummy), holder.getHeld(Key.key("test:dummy")));
 	}
 
 	@Test
@@ -92,7 +93,7 @@ class TypeHolderTest {
 	void checkReleaseID() {
 		var dummy = typeRegistry.newInstance(DataAddonDummy.class);
 		var dummy1 = typeRegistry.newInstance(DataAddonDummy.class);
-		holder.release("dummy");
+		holder.release(Key.key("test:dummy"));
 		assertFalse(holder.containsInstance(dummy));
 		assertFalse(holder.containsInstance(dummy1));
 	}

@@ -10,6 +10,7 @@ import java.util.Collection;
 
 import net.drf.dataaddon.annotation.DataAddon;
 import net.drf.dataaddon.holder.TypeHolder;
+import net.kyori.adventure.key.Key;
 
 /**
  * Registry containing Unique DataAddon types where you can register and instantiate "custom" types.
@@ -42,21 +43,21 @@ public abstract class TypeRegistry {
 	 * @param <T> your exact type.
 	 * @return Instance added into all holders added to this {@link TypeRegistry}.
 	 */
-	public abstract <T> T newInstance(String identifier);
+	public abstract <T> T newInstance(Key identifier);
 
 	/**
 	 * Obtains unique identifier by its class. 
 	 * @param registrableType registered non-abstract "custom" type implementing {@link DataAddon} interface.
 	 * @return unique identifier.
 	 */
-	public abstract String getIdentifier(Class<?> registrableType);
+	public abstract Key getIdentifier(Class<?> registrableType);
 
 	/**
 	 * Obtains {@link DataAddon} class by its unique id.
 	 * @param identifier unique id.
 	 * @return {@link DataAddon} class.
 	 */
-	public abstract Class<?> getRegistrableType(String identifier);
+	public abstract Class<?> getRegistrableType(Key identifier);
 
 	/**
 	 * Adds {@link TypeHolder} to this {@link TypeRegistry} for handling.

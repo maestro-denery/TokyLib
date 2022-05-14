@@ -4,14 +4,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package dev.tablight.test;
+package net.drf.dataaddon.test;
 
 import net.drf.dataaddon.DataAddonBootstrap;
 import net.drf.dataaddon.annotation.group.GroupContainer;
-import dev.tablight.test.dummies.DataAddonDummy;
-import dev.tablight.test.registries.DummyHolder;
-import dev.tablight.test.registries.DummyTypeRegistry;
-import dev.tablight.test.registries.subpkg.DummyController;
+import net.drf.dataaddon.test.dummies.DataAddonDummy;
+import net.drf.dataaddon.test.registries.DummyHolder;
+import net.drf.dataaddon.test.registries.DummyTypeRegistry;
+import net.drf.dataaddon.test.registries.subpkg.DummyController;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

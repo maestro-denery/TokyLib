@@ -3,28 +3,28 @@
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package dev.tablight.test;
+package net.drf.dataaddon.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import net.drf.dataaddon.test.registries.DummyHolder;
+import net.drf.dataaddon.test.registries.DummyTypeRegistry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import net.drf.dataaddon.DataAddonBootstrap;
 import net.drf.dataaddon.annotation.group.GroupContainer;
-import dev.tablight.test.registries.DummyHolder;
-import dev.tablight.test.registries.DummyTypeRegistry;
-import dev.tablight.test.registries.subpkg.DummyController;
+import net.drf.dataaddon.test.registries.subpkg.DummyController;
 
-class PackageBootstrapTest {
+class BootstrapTest {
 	DataAddonBootstrap bootstrap = new DataAddonBootstrap();
 
 	@BeforeEach
 	void before() {
 		bootstrap.setContainer(new GroupContainer());
-		bootstrap.bootstrapRegistries("dev.tablight.test.registries");
-		bootstrap.bootstrapDataAddons("dev.tablight.test.dummies");
+		bootstrap.bootstrapRegistries("net.drf.dataaddon.test.registries");
+		bootstrap.bootstrapDataAddons("net.drf.dataaddon.test.dummies");
 	}
 
 	@AfterEach

@@ -3,14 +3,14 @@
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package dev.tablight.test.dummies;
+package net.drf.dataaddon.test.dummies;
 
 import net.drf.dataaddon.annotation.DataAddon;
 import net.drf.dataaddon.annotation.Load;
 import net.drf.dataaddon.annotation.Store;
 
 @DataAddon(
-		identifier = "dummy",
+		identifier = "test:dummy",
 		groupTag = "dummyGroup",
 		nativeClass = DataAddonDummyLookup.NativeDummy.class,
 		lookup = DataAddonDummyLookup.class

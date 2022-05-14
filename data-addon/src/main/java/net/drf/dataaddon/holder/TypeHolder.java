@@ -12,11 +12,14 @@ import com.lmax.disruptor.EventHandler;
 
 import net.drf.dataaddon.annotation.DataAddon;
 import net.drf.dataaddon.typeregistry.TypeRegistry;
+import net.kyori.adventure.key.Key;
+import org.jetbrains.annotations.ApiStatus;
 
 /**
  * Class "holding" instances of {@link TypeRegistry},
  * it is needed when you need to handle your "custom" types marked with {@link DataAddon}.
  */
+@ApiStatus.Experimental
 public abstract class TypeHolder {
 
 	/**
@@ -45,7 +48,7 @@ public abstract class TypeHolder {
 	 * Same as {@link #release(Class)} but with String identifier.
 	 * @param identifier Identifier of instances you want to release.
 	 */
-	public abstract void release(String identifier);
+	public abstract void release(Key identifier);
 
 	/**
 	 * Checks if this holder contains the following instance.
@@ -69,7 +72,7 @@ public abstract class TypeHolder {
 	 * @param <T> Exact type of {@link DataAddon}
 	 * @return All instances held by this holder of your specific type.
 	 */
-	public abstract <T> Collection<T> getHeld(String identifier);
+	public abstract <T> Collection<T> getHeld(Key identifier);
 
 	/**
 	 * Adds handler of Events happening after {@link #hold(Object)} and {@link #release(Class)} methods.
