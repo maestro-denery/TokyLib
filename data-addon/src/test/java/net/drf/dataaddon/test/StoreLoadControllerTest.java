@@ -6,6 +6,7 @@
 package net.drf.dataaddon.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import net.drf.dataaddon.test.dummies.DataAddonDummy;
 import net.drf.dataaddon.test.dummies.DataAddonDummyLookup;
@@ -99,5 +100,12 @@ class StoreLoadControllerTest {
 		DataAddonDummy dummy = holder.getHeld(DataAddonDummy.class).stream().findFirst().get();
 		assertEquals("native1", dummy.getSomeNativeStringData());
 		assertEquals("load", dummy.getSomeString());
+	}
+
+	@Test
+	void checkMark() {
+		controller.lookupAndLoad(DataAddonDummy.class);
+		DataAddonDummy dummy = holder.getHeld(DataAddonDummy.class).stream().findFirst().get();
+		assertNotNull(controller.getCustomMark(dummy));
 	}
 }

@@ -10,7 +10,6 @@ import java.util.Collection;
 
 import net.drf.dataaddon.annotation.DataAddon;
 import net.drf.dataaddon.holder.TypeHolder;
-import net.drf.dataaddon.mark.Mark;
 
 /**
  * Controller of "store load" mechanism of {@link DataAddon} instances.
@@ -77,20 +76,19 @@ public abstract class StoreLoadController {
 	 * Obtain Marks by data addon types associated with them.
 	 * @param registrableType {@link DataAddon} you want to obtain its marks.
 	 * @param <T> type of registrable in this lookup.
-	 * @param <N> native type.
 	 * @return mark associated with this Data Addon type.
 	 */
-	public abstract <T, N> Mark<T, N> getMark(Class<T> registrableType);
+	public abstract <T> Mark<T, ?> getCustomMark(T registrableType);
 
 	/**
 	 * Adds holder to this controller.
 	 * @param registrableHolder holder you want to add.
 	 */
-	public abstract void addRegistrableHolder(TypeHolder registrableHolder);
+	public abstract void addTypeHolder(TypeHolder registrableHolder);
 
 	/**
 	 * Obtains holders added in this {@link StoreLoadController}
 	 * @return All added holders.
 	 */
-	public abstract Collection<TypeHolder> getRegistrableHolders();
+	public abstract Collection<TypeHolder> getTypeHolders();
 }

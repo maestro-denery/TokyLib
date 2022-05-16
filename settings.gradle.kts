@@ -8,6 +8,7 @@ pluginManagement {
 rootProject.name = "DRF"
 
 // Libraries / APIs
+include("registries")
 include("data-addon")
 
 // Implementations

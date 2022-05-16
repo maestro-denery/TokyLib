@@ -57,7 +57,7 @@ public final class AnnotationUtil {
 				}).toList();
 		registries.forEach(typeRegistry -> holders.forEach(typeRegistry::addRegistrableHolder));
 		holders.forEach(holder -> registries.forEach(holder::addTypeRegistry));
-		controllers.forEach(controller -> holders.forEach(controller::addRegistrableHolder));
+		controllers.forEach(controller -> holders.forEach(controller::addTypeHolder));
 	}
 
 	public static void connectDataAddons(GroupContainer repository) {

@@ -10,10 +10,12 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://libraries.minecraft.net")
     }
 
     dependencies {
         api("net.kyori:adventure-key:4.10.1")
+        api("com.mojang:datafixerupper:4.1.27")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")

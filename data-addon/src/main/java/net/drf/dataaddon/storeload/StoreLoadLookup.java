@@ -6,9 +6,9 @@
 
 package net.drf.dataaddon.storeload;
 
-import java.util.stream.Stream;
+import com.mojang.datafixers.util.Pair;
 
-import net.drf.dataaddon.mark.Mark;
+import java.util.stream.Stream;
 
 /**
  * Class looking for native data and returns instantiated DataAddon classes added to a holder.
@@ -17,6 +17,9 @@ import net.drf.dataaddon.mark.Mark;
  */
 public interface StoreLoadLookup<T, N> {
 
+	/**
+	 * @return A mark, see {@link Mark}
+	 */
 	Mark<T, N> mark();
 
 	/**
@@ -27,7 +30,7 @@ public interface StoreLoadLookup<T, N> {
 	/**
 	 * @return lazy lookup obtaining instances of DataAddon instances
 	 */
-	default Stream<T> lookup() {
-		return getNatives().map(n -> mark().convert(n)).filter(t -> mark().matches().test(t));
+	default Stream<Pair<T, N>> lookup() {
+		return getNatives().filter(n -> mark().matches(n)).map(n -> Pair.of(mark().convert(n), n));
 	}
 }

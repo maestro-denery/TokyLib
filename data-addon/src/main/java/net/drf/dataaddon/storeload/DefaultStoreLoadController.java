@@ -6,27 +6,38 @@
 
 package net.drf.dataaddon.storeload;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Stream;
-
 import com.google.common.collect.BiMap;
-
 import com.google.common.collect.HashBiMap;
-
+import com.mojang.datafixers.util.Pair;
 import net.drf.dataaddon.RegistryException;
 import net.drf.dataaddon.annotation.AnnotationUtil;
 import net.drf.dataaddon.annotation.DataAddon;
 import net.drf.dataaddon.holder.TypeHolder;
-import net.drf.dataaddon.mark.Mark;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class DefaultStoreLoadController extends StoreLoadController {
 	protected final Collection<TypeHolder> holders = new ArrayList<>();
-	protected final BiMap<Class<?>, Mark<?, ?>> marks = HashBiMap.create();
+	// Total type erasure but eh... magic.
+	protected final Map<Object, Mark<Object, Object>> customTypeMarks = new HashMap<>();
+	protected final Map<Object, Mark<Object, Object>> nativeTypeMarks = new HashMap<>();
+	protected final BiMap<Object, Object> customToNative = HashBiMap.create();
 
 	@Override
 	public void store(Class<?> registrableType) {
-		holders.forEach(holder -> holder.getHeld(registrableType).forEach(AnnotationUtil::invokeStore));
+		holders.forEach(holder -> holder.getHeld(registrableType).forEach(registrable -> {
+			final Mark<Object, Object> mark = customTypeMarks.get(registrableType);
+			if (mark != null) {
+				Object n = customToNative.get(registrable);
+				if (n != null)
+					mark.mark(n);
+			}
+			AnnotationUtil.invokeStore(registrable);
+		}));
 	}
 
 	@Override
@@ -46,8 +57,8 @@ public class DefaultStoreLoadController extends StoreLoadController {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T, N> Mark<T, N> getMark(Class<T> registrableType) {
-		return (Mark<T, N>) marks.get(registrableType);
+	public <T> Mark<T, ?> getCustomMark(T registrableType) {
+		return (Mark<T, ?>) customTypeMarks.get(registrableType);
 	}
 
 	@Override
@@ -63,24 +74,37 @@ public class DefaultStoreLoadController extends StoreLoadController {
 	@Override
 	public <T, N> void lookupAndLoad(StoreLoadLookup<T, N> lookup) {
 		lookup.lookup().forEach(instantiated -> {
-			holders.forEach(holder -> holder.hold(instantiated));
-			AnnotationUtil.invokeLoad(instantiated);
+			putCustomNativeData(instantiated, lookup.mark());
+			holders.forEach(holder -> holder.hold(instantiated.getFirst()));
+			AnnotationUtil.invokeLoad(instantiated.getFirst());
 		});
 	}
 
 	@Override
 	public <T, N> void lookup(StoreLoadLookup<T, N> lookup) {
-		Stream<T> lookedStream = lookup.lookup();
-		lookedStream.forEach(registrable -> holders.forEach(holder -> holder.hold(registrable)));
+		Stream<Pair<T, N>> lookedStream = lookup.lookup();
+		lookedStream.forEach(registrable -> {
+			putCustomNativeData(registrable, lookup.mark());
+			holders.forEach(holder -> holder.hold(registrable.getFirst()));
+		});
 	}
 
 	@Override
-	public void addRegistrableHolder(TypeHolder registrableHolder) {
+	public void addTypeHolder(TypeHolder registrableHolder) {
 		holders.add(registrableHolder);
 	}
 
 	@Override
-	public Collection<TypeHolder> getRegistrableHolders() {
+	public Collection<TypeHolder> getTypeHolders() {
 		return holders;
+	}
+
+	// Private methods.
+
+	@SuppressWarnings("unchecked")
+	private <T, N> void putCustomNativeData(Pair<T, N> customAndNative, Mark<T, N> mark) {
+		nativeTypeMarks.put(customAndNative.getSecond(), (Mark<Object, Object>) mark);
+		customTypeMarks.put(customAndNative.getFirst(), (Mark<Object, Object>) mark);
+		customToNative.put(customAndNative.getFirst(), customAndNative.getSecond());
 	}
 }

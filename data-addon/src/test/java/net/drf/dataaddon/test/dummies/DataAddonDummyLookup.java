@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
 
-import net.drf.dataaddon.mark.Mark;
+import net.drf.dataaddon.storeload.Mark;
 import net.drf.dataaddon.storeload.StoreLoadLookup;
 
 public class DataAddonDummyLookup implements StoreLoadLookup<DataAddonDummy, DataAddonDummyLookup.NativeDummy> {
