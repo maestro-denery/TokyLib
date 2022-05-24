@@ -5,11 +5,13 @@ pluginManagement {
     }
 }
 
-rootProject.name = "DRF"
+rootProject.name = "drf-core"
 
-// Libraries / APIs
-include("registries")
-include("data-addon")
-
-// Implementations
-include("paper-impl")
+sequenceOf(
+    "bom",
+    "data-addons",
+    "registries"
+).forEach {
+    include("drf-$it")
+    project(":drf-$it").projectDir = file(it)
+}

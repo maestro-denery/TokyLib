@@ -1,31 +1,30 @@
 plugins {
     id("java-library")
+    id("maven-publish")
 }
 
-group = "net.drf.drf-api"
-version = "1.0-SNAPSHOT"
+allprojects.filter { it.name != "drf-bom" }.forEach {
+    it.apply(plugin = "java-library")
+    it.apply(plugin = "maven-publish")
 
-allprojects {
-    apply(plugin = "java-library")
-
-    repositories {
+    it.repositories {
         mavenCentral()
         maven("https://libraries.minecraft.net")
     }
 
-    dependencies {
-        api("net.kyori:adventure-key:4.10.1")
-        api("com.mojang:datafixerupper:4.1.27")
+    it.dependencies {
+        compileOnlyApi("net.kyori:adventure-key:4.10.1")
+        compileOnlyApi("com.mojang:datafixerupper:4.1.27")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     }
 
-    java {
+    it.java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(17))
     }
 
-    tasks {
+    it.tasks {
         compileJava {
             options.encoding = Charsets.UTF_8.name()
             options.release.set(17)
@@ -38,6 +37,35 @@ allprojects {
         }
         getByName<Test>("test") {
             useJUnitPlatform()
+        }
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>(it.name) {
+                artifact(it.tasks.jar) {
+                    groupId = "net.drf"
+                    artifactId = it.name
+                    version = project.properties["version"].toString()
+                }
+                pom {
+                    licenses {
+                        license {
+                            name.set("Mozilla Public License Version 2.0")
+                            url.set("https://mozilla.org/MPL/2.0/")
+                        }
+                    }
+                }
+
+                versionMapping {
+                    usage("java-api") {
+                        fromResolutionOf("runtimeClasspath")
+                    }
+                    usage("java-runtime") {
+                        fromResolutionResult()
+                    }
+                }
+            }
         }
     }
 }
