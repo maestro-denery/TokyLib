@@ -55,11 +55,8 @@ subprojects.filter { it.name != "drf-bom" }.forEach {
                 artifact(it.tasks.getByName("javadocJar")) {
                     classifier = "javadoc"
                 }
-                artifacts.artifact(it.tasks.jar) {
-                    classifier = ""
-                }
 
-                //from(components["java"])
+                artifacts.artifact(it.tasks.jar)
 
                 pom {
                     licenses {
@@ -69,15 +66,6 @@ subprojects.filter { it.name != "drf-bom" }.forEach {
                         }
                     }
                 }
-
-                /*versionMapping {
-                    usage("java-api") {
-                        fromResolutionOf("runtimeClasspath")
-                    }
-                    usage("java-runtime") {
-                        fromResolutionResult()
-                    }
-                }*/
             }
         }
     }
