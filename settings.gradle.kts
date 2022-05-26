@@ -5,12 +5,12 @@ pluginManagement {
     }
 }
 
-rootProject.name = "drf-core"
+rootProject.name = "drf-parent"
 
 sequenceOf(
     "bom",
+    "base",
     "data-addons",
-    "lightweight-data-addons",
     "registries"
 ).forEach {
     include("drf-$it")

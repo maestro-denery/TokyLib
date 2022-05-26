@@ -30,7 +30,8 @@ public final class EventFactory {
     }
 
     /**
-     * <h2>!WARNING! This implementation is experimental and may cause race-conditions!</h2>
+     * !WARNING! This implementation is experimental and may cause race-conditions!
+     * <p>
      * Same as {@link #createArrayBacked(Class, Function)} but uses faster non-blocking synchronization for providing thread-safety.
      * @return An event instance which other users can thread-safely subscribe in a non-blocking manner.
      */

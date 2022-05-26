@@ -12,8 +12,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Mark your class extending {@link dev.tablight.common.base.dataaddon.storeload.StoreLoadController} to use it other infrastructure. 
- * @see dev.tablight.common.base.dataaddon.DataAddonBootstrap
+ * Mark your class extending {@link net.drf.dataaddon.storeload.StoreLoadController} to use it other infrastructure.
+ * @see net.drf.dataaddon.DataAddonBootstrap
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

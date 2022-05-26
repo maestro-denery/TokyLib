@@ -1,16 +1,10 @@
+// TODO clean up the
 plugins {
     id("java-library")
     id("maven-publish")
-    id("io.github.reyerizo.gradle.jcstress") version "0.8.13"
 }
 
-jcstress {
-    verbose = "true"
-    // timeMillis = "200"
-    spinStyle = "HARD"
-}
-
-allprojects.filter { it.name != "drf-bom" }.forEach {
+subprojects.filter { it.name != "drf-bom" }.forEach {
     it.apply(plugin = "java-library")
     it.apply(plugin = "maven-publish")
 
@@ -21,7 +15,6 @@ allprojects.filter { it.name != "drf-bom" }.forEach {
 
     it.dependencies {
         compileOnlyApi("net.kyori:adventure-key:4.10.1")
-        compileOnlyApi("com.mojang:datafixerupper:4.1.27")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
@@ -29,6 +22,8 @@ allprojects.filter { it.name != "drf-bom" }.forEach {
 
     it.java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+        withSourcesJar()
+        withJavadocJar()
     }
 
     it.tasks {
@@ -47,14 +42,25 @@ allprojects.filter { it.name != "drf-bom" }.forEach {
         }
     }
 
-    publishing {
+    it.publishing {
         publications {
             create<MavenPublication>(it.name) {
-                artifact(it.tasks.jar) {
-                    groupId = "net.drf"
-                    artifactId = it.name
-                    version = project.properties["version"].toString()
+                groupId = "net.drf"
+                artifactId = it.name
+
+                artifact(it.tasks.getByName("sourcesJar")) {
+                    classifier = "sources"
                 }
+
+                artifact(it.tasks.getByName("javadocJar")) {
+                    classifier = "javadoc"
+                }
+                artifacts.artifact(it.tasks.jar) {
+                    classifier = ""
+                }
+
+                //from(components["java"])
+
                 pom {
                     licenses {
                         license {
@@ -64,14 +70,14 @@ allprojects.filter { it.name != "drf-bom" }.forEach {
                     }
                 }
 
-                versionMapping {
+                /*versionMapping {
                     usage("java-api") {
                         fromResolutionOf("runtimeClasspath")
                     }
                     usage("java-runtime") {
                         fromResolutionResult()
                     }
-                }
+                }*/
             }
         }
     }

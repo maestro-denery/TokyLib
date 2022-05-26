@@ -6,6 +6,7 @@ plugins {
 dependencies {
     constraints {
         sequenceOf(
+            "base",
             "data-addons",
             "registries"
         ).forEach {

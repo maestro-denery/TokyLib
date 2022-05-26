@@ -76,10 +76,13 @@ public abstract class TypeHolder {
 
 	/**
 	 * Adds handler of Events happening after {@link #hold(Object)} and {@link #release(Class)} methods.
-	 * 
-	 * @implNote 1. Handlers run in their own threads, make sure you're handling everything thread-safely.
-	 * 2. You need to add all your handlers before any action or {@link #forceStart()} method fired. 
-	 * It works this way because we use "disruptor" event system for fastest ever events.
+	 * <p>
+	 * Impl notes:
+	 * <ul>
+	 *	<li>Handlers run in their own threads, make sure you're handling everything thread-safely.</li>
+	 * 	<li>You need to add all your handlers before any action or {@link #forceStart()} method fired.
+	 * 	It works this way because we use "disruptor" event system for fastest ever events.</li>
+	 * </ul>
 	 * @param handler handler you want to add.
 	 */
 	public abstract void handle(EventHandler<? super HolderEvent> handler);

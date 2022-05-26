@@ -4,10 +4,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package net.drf.dataaddon;
+package net.drf.registry;
 
-public interface DataAddon {
-    void load();
+public interface Registry<T> {
 
-    void store();
 }
