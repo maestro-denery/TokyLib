@@ -1,6 +1,13 @@
 plugins {
     id("java-library")
     id("maven-publish")
+    id("io.github.reyerizo.gradle.jcstress") version "0.8.13"
+}
+
+jcstress {
+    verbose = "true"
+    // timeMillis = "200"
+    spinStyle = "HARD"
 }
 
 allprojects.filter { it.name != "drf-bom" }.forEach {

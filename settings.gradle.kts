@@ -10,6 +10,7 @@ rootProject.name = "drf-core"
 sequenceOf(
     "bom",
     "data-addons",
+    "lightweight-data-addons",
     "registries"
 ).forEach {
     include("drf-$it")
