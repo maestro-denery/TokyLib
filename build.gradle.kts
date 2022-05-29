@@ -1,4 +1,4 @@
-// TODO clean up the
+// TODO clean up the buildscript
 plugins {
     id("java-library")
     id("maven-publish")
