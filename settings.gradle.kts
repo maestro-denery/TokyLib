@@ -5,14 +5,13 @@ pluginManagement {
     }
 }
 
-rootProject.name = "drf-parent"
+rootProject.name = "tokylib-parent"
 
 sequenceOf(
     "bom",
     "base",
-    "data-addons",
-    "registries"
+    "data-addons"
 ).forEach {
-    include("drf-$it")
-    project(":drf-$it").projectDir = file(it)
+    include("toky-$it")
+    project(":toky-$it").projectDir = file(it)
 }

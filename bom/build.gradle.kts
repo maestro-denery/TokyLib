@@ -7,17 +7,16 @@ dependencies {
     constraints {
         sequenceOf(
             "base",
-            "data-addons",
-            "registries"
+            "data-addons"
         ).forEach {
-            api(project(":drf-$it"))
+            api(project(":toky-$it"))
         }
     }
 }
 
 publishing {
     publications {
-        create<MavenPublication>("drf-platform") {
+        create<MavenPublication>("toky-platform") {
             from(components["javaPlatform"])
         }
     }

@@ -4,7 +4,7 @@ plugins {
     id("maven-publish")
 }
 
-subprojects.filter { it.name != "drf-bom" }.forEach {
+subprojects.filter { it.name != "toky-bom" }.forEach {
     it.apply(plugin = "java-library")
     it.apply(plugin = "maven-publish")
 
@@ -14,7 +14,7 @@ subprojects.filter { it.name != "drf-bom" }.forEach {
     }
 
     it.dependencies {
-        compileOnlyApi("net.kyori:adventure-key:4.10.1")
+        api("net.kyori:adventure-key:4.10.1")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
