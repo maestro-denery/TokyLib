@@ -7,7 +7,7 @@ dependencies {
     constraints {
         sequenceOf(
             "base",
-            "data-addons"
+            "content-addons"
         ).forEach {
             api(project(":toky-$it"))
         }
