@@ -10,7 +10,8 @@ rootProject.name = "tokylib-parent"
 sequenceOf(
     "bom",
     "base",
-    "content-addons"
+    "content-addons",
+    "io"
 ).forEach {
     include("toky-$it")
     project(":toky-$it").projectDir = file(it)

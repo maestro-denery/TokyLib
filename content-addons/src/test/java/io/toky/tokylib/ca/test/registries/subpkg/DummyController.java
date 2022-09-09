@@ -5,8 +5,8 @@
 
 package io.toky.tokylib.ca.test.registries.subpkg;
 
-import io.toky.tokylib.ca.annotation.group.Controller;
-import io.toky.tokylib.ca.storeload.DefaultStoreLoadController;
+import io.toky.tokylib.ca.annotation.group.ContentLookuper;
+import io.toky.tokylib.ca.lookup.DefaultStoreLoadController;
 
-@Controller("dummyGroup")
+@ContentLookuper("dummyGroup")
 public class DummyController extends DefaultStoreLoadController {}

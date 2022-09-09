@@ -12,14 +12,14 @@ import java.util.List;
 import com.google.common.reflect.ClassPath;
 
 import io.toky.tokylib.ca.annotation.AnnotationUtil;
-import io.toky.tokylib.ca.annotation.group.Controller;
-import io.toky.tokylib.ca.holder.TypeHolder;
-import io.toky.tokylib.ca.typeregistry.TypeRegistry;
+import io.toky.tokylib.ca.annotation.group.ContentLookuper;
+import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ca.type.TypeRegistry;
 import io.toky.tokylib.ca.annotation.ContentAddon;
 import io.toky.tokylib.ca.annotation.group.GroupContainer;
-import io.toky.tokylib.ca.annotation.group.Holder;
+import io.toky.tokylib.ca.annotation.group.InstanceHolder;
 import io.toky.tokylib.ca.annotation.group.Registry;
-import io.toky.tokylib.ca.storeload.StoreLoadController;
+import io.toky.tokylib.ca.lookup.Lookuper;
 
 /**
  * Bootstrap where you initialize all work of your Data Addons and its registries.
@@ -36,17 +36,17 @@ public final class DataAddonBootstrap {
 	}
 
 	/**
-	 * Configures {@link TypeRegistry}, {@link TypeHolder}, {@link StoreLoadController} and other infrastructure among given classes.
+	 * Configures {@link TypeRegistry}, {@link TypeInstanceHolder}, {@link Lookuper} and other infrastructure among given classes.
 	 * @param classes registries you want to register.
 	 */
 	public void bootstrapRegistries(Class<?>... classes) {
 		for (Class<?> aClass : classes) {
 			if (aClass.isAnnotationPresent(Registry.class))
 				container.registerTypeRegistry(aClass.asSubclass(TypeRegistry.class));
-			else if (aClass.isAnnotationPresent(Holder.class))
-				container.registerHolder(aClass.asSubclass(TypeHolder.class));
-			else if (aClass.isAnnotationPresent(Controller.class))
-				container.registerController(aClass.asSubclass(StoreLoadController.class));
+			else if (aClass.isAnnotationPresent(InstanceHolder.class))
+				container.registerHolder(aClass.asSubclass(TypeInstanceHolder.class));
+			else if (aClass.isAnnotationPresent(ContentLookuper.class))
+				container.registerController(aClass.asSubclass(Lookuper.class));
 			else throw new RegistryException("Class: " + aClass + " Has no annotation!");
 		}
 
@@ -54,7 +54,7 @@ public final class DataAddonBootstrap {
 	}
 
 	/**
-	 * Configures {@link TypeRegistry}, {@link TypeHolder}, {@link StoreLoadController} and other infrastructure in the package.
+	 * Configures {@link TypeRegistry}, {@link TypeInstanceHolder}, {@link Lookuper} and other infrastructure in the package.
 	 * @param packageName package containing registries.
 	 */
 	public void bootstrapRegistries(String packageName) {
@@ -71,12 +71,12 @@ public final class DataAddonBootstrap {
 					.forEach(clazz -> container.registerTypeRegistry(clazz.asSubclass(TypeRegistry.class)));
 
 			classesInPackage.stream()
-					.filter(clazz -> clazz.isAnnotationPresent(Holder.class))
-					.forEach(clazz -> container.registerHolder(clazz.asSubclass(TypeHolder.class)));
+					.filter(clazz -> clazz.isAnnotationPresent(InstanceHolder.class))
+					.forEach(clazz -> container.registerHolder(clazz.asSubclass(TypeInstanceHolder.class)));
 
 			classesInPackage.stream()
-					.filter(clazz -> clazz.isAnnotationPresent(Controller.class))
-					.forEach(clazz -> container.registerController(clazz.asSubclass(StoreLoadController.class)));
+					.filter(clazz -> clazz.isAnnotationPresent(ContentLookuper.class))
+					.forEach(clazz -> container.registerController(clazz.asSubclass(Lookuper.class)));
 			
 			AnnotationUtil.connectGroupsInContainer(container);
 		} catch (IOException e) {

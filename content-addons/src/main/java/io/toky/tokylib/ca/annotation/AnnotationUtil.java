@@ -13,9 +13,9 @@ import java.util.List;
 import io.toky.tokylib.ca.RegistryException;
 import io.toky.tokylib.ca.annotation.group.GroupContainer;
 import io.toky.tokylib.ca.annotation.group.Registry;
-import io.toky.tokylib.ca.holder.TypeHolder;
-import io.toky.tokylib.ca.storeload.StoreLoadController;
-import io.toky.tokylib.ca.typeregistry.TypeRegistry;
+import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ca.lookup.Lookuper;
+import io.toky.tokylib.ca.type.TypeRegistry;
 
 /**
  * Internal Utilities for handling annotations, regular user shouldn't touch it.
@@ -35,28 +35,28 @@ public final class AnnotationUtil {
 						throw new RegistryException(classRequirements);
 					}
 				}).toList();
-		List<? extends TypeHolder> holders = repository.holders.values().stream()
+		List<? extends TypeInstanceHolder> holders = repository.holders.values().stream()
 				.map(clazz -> {
 					try {
-						TypeHolder typeHolder = clazz.getDeclaredConstructor().newInstance();
+						TypeInstanceHolder typeHolder = clazz.getDeclaredConstructor().newInstance();
 						repository.hold(typeHolder);
 						return typeHolder;
 					} catch (ReflectiveOperationException e) {
 						throw new RegistryException(classRequirements);
 					}
 				}).toList();
-		List<? extends StoreLoadController> controllers = repository.controllers.values().stream()
+		List<? extends Lookuper> controllers = repository.controllers.values().stream()
 				.map(clazz -> {
 					try {
-						StoreLoadController controller = clazz.getDeclaredConstructor().newInstance();
+						Lookuper controller = clazz.getDeclaredConstructor().newInstance();
 						repository.hold(controller);
 						return controller;
 					} catch (ReflectiveOperationException e) {
 						throw new RegistryException(classRequirements);
 					}
 				}).toList();
-		registries.forEach(typeRegistry -> holders.forEach(typeRegistry::addRegistrableHolder));
-		holders.forEach(holder -> registries.forEach(holder::addTypeRegistry));
+		registries.forEach(typeRegistry -> holders.forEach(typeRegistry::setTIH));
+		holders.forEach(holder -> registries.forEach(holder::setTypeRegistry));
 		controllers.forEach(controller -> holders.forEach(controller::addTypeHolder));
 	}
 

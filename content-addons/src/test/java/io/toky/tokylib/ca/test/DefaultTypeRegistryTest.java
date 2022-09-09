@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import io.toky.tokylib.ca.DataAddonBootstrap;
 import io.toky.tokylib.ca.test.dummies.DataAddonDummy;
-import io.toky.tokylib.ca.typeregistry.DefaultTypeRegistry;
+import io.toky.tokylib.ca.type.DefaultTypeRegistry;
 import net.kyori.adventure.key.Key;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,6 +59,6 @@ class DefaultTypeRegistryTest {
 	
 	@Test
 	void checkGetClass() {
-		assertEquals(DataAddonDummy.class, registry.getRegistrableType(Key.key("test:dummy")));
+		assertEquals(DataAddonDummy.class, registry.getContentAddonType(Key.key("test:dummy")));
 	}
 }

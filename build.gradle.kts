@@ -15,8 +15,12 @@ subprojects.filter { it.name != "toky-bom" }.forEach {
 
     it.dependencies {
         api("net.kyori:adventure-key:4.10.1")
+        api("com.mojang:datafixerupper:4.1.27")
+        api("com.google.guava:guava:31.1-jre")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+        testImplementation("com.google.guava:guava:31.1-jre")
+        testImplementation("com.lmax:disruptor:3.4.4")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     }
 

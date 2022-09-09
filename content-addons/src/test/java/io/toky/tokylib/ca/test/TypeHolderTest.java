@@ -12,7 +12,7 @@ import java.util.List;
 import io.toky.tokylib.ca.DataAddonBootstrap;
 import io.toky.tokylib.ca.holder.eventsourcing.ConcurrentEventTypeHolder;
 import io.toky.tokylib.ca.test.dummies.DataAddonDummy;
-import io.toky.tokylib.ca.typeregistry.TypeRegistry;
+import io.toky.tokylib.ca.type.TypeRegistry;
 import io.toky.tokylib.ca.test.registries.DummyHolder;
 import io.toky.tokylib.ca.test.registries.DummyTypeRegistry;
 import net.kyori.adventure.key.Key;

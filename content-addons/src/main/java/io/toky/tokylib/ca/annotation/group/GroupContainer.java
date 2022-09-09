@@ -16,9 +16,9 @@ import com.google.common.collect.HashBiMap;
 import io.toky.tokylib.ca.DataAddonBootstrap;
 import io.toky.tokylib.ca.RegistryException;
 import io.toky.tokylib.ca.annotation.ContentAddon;
-import io.toky.tokylib.ca.holder.TypeHolder;
-import io.toky.tokylib.ca.storeload.StoreLoadController;
-import io.toky.tokylib.ca.typeregistry.TypeRegistry;
+import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ca.lookup.Lookuper;
+import io.toky.tokylib.ca.type.TypeRegistry;
 
 /**
  * Container containing group tags and classes with their instances, it is needed only for {@link DataAddonBootstrap}
@@ -27,8 +27,8 @@ public class GroupContainer {
 	private static final String DOESNT_HAVE_ANNOTATION = "Class doesn't have annotation";
 	public final Map<String, Class<?>> dataAddons = new HashMap<>();
 	public final Map<String, Class<? extends TypeRegistry>> typeRegistries = new HashMap<>();
-	public final Map<String, Class<? extends TypeHolder>> holders = new HashMap<>();
-	public final Map<String, Class<? extends StoreLoadController>> controllers = new HashMap<>();
+	public final Map<String, Class<? extends TypeInstanceHolder>> holders = new HashMap<>();
+	public final Map<String, Class<? extends Lookuper>> controllers = new HashMap<>();
 	public final BiMap<Class<?>, Object> data = HashBiMap.create();
 
 	public <T> void hold(T instance) {
@@ -47,14 +47,14 @@ public class GroupContainer {
 		typeRegistries.put(clazz.getAnnotation(Registry.class).value(), clazz);
 	}
 
-	public void registerHolder(Class<? extends TypeHolder> clazz) {
-		if (!clazz.isAnnotationPresent(Holder.class)) throw new RegistryException(DOESNT_HAVE_ANNOTATION);
-		holders.put(clazz.getAnnotation(Holder.class).value(), clazz);
+	public void registerHolder(Class<? extends TypeInstanceHolder> clazz) {
+		if (!clazz.isAnnotationPresent(InstanceHolder.class)) throw new RegistryException(DOESNT_HAVE_ANNOTATION);
+		holders.put(clazz.getAnnotation(InstanceHolder.class).value(), clazz);
 	}
 
-	public void registerController(Class<? extends StoreLoadController> clazz) {
-		if (!clazz.isAnnotationPresent(Controller.class)) throw new RegistryException(DOESNT_HAVE_ANNOTATION);
-		controllers.put(clazz.getAnnotation(Controller.class).value(), clazz);
+	public void registerController(Class<? extends Lookuper> clazz) {
+		if (!clazz.isAnnotationPresent(ContentLookuper.class)) throw new RegistryException(DOESNT_HAVE_ANNOTATION);
+		controllers.put(clazz.getAnnotation(ContentLookuper.class).value(), clazz);
 	}
 
 	public void registerImplementation(Class<?> clazz) {

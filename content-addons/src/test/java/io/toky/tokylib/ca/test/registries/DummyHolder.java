@@ -6,7 +6,7 @@
 package io.toky.tokylib.ca.test.registries;
 
 import io.toky.tokylib.ca.holder.eventsourcing.ConcurrentEventTypeHolder;
-import io.toky.tokylib.ca.annotation.group.Holder;
+import io.toky.tokylib.ca.annotation.group.InstanceHolder;
 
-@Holder("dummyGroup")
+@InstanceHolder("dummyGroup")
 public class DummyHolder extends ConcurrentEventTypeHolder {}

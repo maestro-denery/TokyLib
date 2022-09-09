@@ -12,26 +12,26 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import io.toky.tokylib.ca.DataAddonBootstrap;
-import io.toky.tokylib.ca.holder.TypeHolder;
-import io.toky.tokylib.ca.storeload.StoreLoadLookup;
-import io.toky.tokylib.ca.typeregistry.TypeRegistry;
-import io.toky.tokylib.ca.storeload.StoreLoadController;
+import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ca.lookup.ContentLookup;
+import io.toky.tokylib.ca.type.TypeRegistry;
+import io.toky.tokylib.ca.lookup.Lookuper;
 
 /**
  * Mark your class with this annotation if it represents object with additional data over some other object data
- * to connect and use it with {@link TypeRegistry}, {@link TypeHolder}, {@link StoreLoadController} and other infrastructure.
+ * to connect and use it with {@link TypeRegistry}, {@link TypeInstanceHolder}, {@link Lookuper} and other infrastructure.
  * @see DataAddonBootstrap
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ContentAddon {
 	/**
-	 * @return Unique String identifier, used in {@link TypeRegistry} and {@link TypeHolder} 
+	 * @return Unique String identifier, used in {@link TypeRegistry} and {@link TypeInstanceHolder}
 	 */
 	String identifier();
 
 	/**
-	 * @return Unique group tag, needs to mark relation between this DataAddon and {@link TypeRegistry}, {@link TypeHolder}, {@link StoreLoadController}.
+	 * @return Unique group tag, needs to mark relation between this DataAddon and {@link TypeRegistry}, {@link TypeInstanceHolder}, {@link Lookuper}.
 	 */
 	String groupTag();
 
@@ -43,5 +43,5 @@ public @interface ContentAddon {
 	/**
 	 * @return "Lookup" which looks for "native" data, makes objects with this type and holds them in connected holders by group tag. 
 	 */
-	Class<? extends StoreLoadLookup<?, ?>> lookup();
+	Class<? extends ContentLookup<?, ?>> lookup();
 }

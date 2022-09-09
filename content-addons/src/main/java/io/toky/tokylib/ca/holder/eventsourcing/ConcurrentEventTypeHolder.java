@@ -20,11 +20,11 @@ import com.lmax.disruptor.util.DaemonThreadFactory;
 
 import io.toky.tokylib.ca.RegistryException;
 import io.toky.tokylib.ca.holder.HolderEvent;
-import io.toky.tokylib.ca.holder.TypeHolder;
-import io.toky.tokylib.ca.typeregistry.TypeRegistry;
+import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ca.type.TypeRegistry;
 import net.kyori.adventure.key.Key;
 
-public class ConcurrentEventTypeHolder extends TypeHolder {
+public class ConcurrentEventTypeHolder extends TypeInstanceHolder {
 	protected boolean running = false;
 	protected Disruptor<HolderEvent> disruptor;
 	protected final Collection<TypeRegistry> typeRegistries = new ArrayList<>();
@@ -41,7 +41,7 @@ public class ConcurrentEventTypeHolder extends TypeHolder {
 	}
 
 	@Override
-	public void addTypeRegistry(TypeRegistry typeRegistry) {
+	public void setTypeRegistry(TypeRegistry typeRegistry) {
 		typeRegistries.add(typeRegistry);
 	}
 
@@ -131,7 +131,7 @@ public class ConcurrentEventTypeHolder extends TypeHolder {
 	@SuppressWarnings("unchecked")
 	private <T> Class<T> getClassByID(Key id) {
 		return (Class<T>) typeRegistries.stream()
-				.map(typeRegistry -> typeRegistry.getRegistrableType(id)).findFirst().orElseThrow(() -> new RegistryException("There is no Registrables defined with given Id"));
+				.map(typeRegistry -> typeRegistry.getContentAddonType(id)).findFirst().orElseThrow(() -> new RegistryException("There is no Registrables defined with given Id"));
 	}
 
 	private <T> void publishEvent(Class<T> tClass) {

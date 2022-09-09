@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
 
-import io.toky.tokylib.ca.storeload.Mark;
+import io.toky.tokylib.ca.lookup.TypeMark;
 import io.toky.tokylib.ca.storeload.StoreLoadLookup;
 
 public class DataAddonDummyLookup implements StoreLoadLookup<DataAddonDummy, DataAddonDummyLookup.NativeDummy> {
@@ -20,8 +20,8 @@ public class DataAddonDummyLookup implements StoreLoadLookup<DataAddonDummy, Dat
 	);
 
 	@Override
-	public Mark<DataAddonDummy, DataAddonDummyLookup.NativeDummy> mark() {
-		return Mark.create(nativeD -> {
+	public TypeMark<DataAddonDummy, NativeDummy> mark() {
+		return TypeMark.create(nativeD -> {
 			var dummy = new DataAddonDummy();
 			dummy.setSomeNativeStringData(nativeD.getSomeNativeString());
 			return dummy;

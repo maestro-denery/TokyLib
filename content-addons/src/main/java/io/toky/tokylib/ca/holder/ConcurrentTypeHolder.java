@@ -15,10 +15,10 @@ import com.google.common.collect.Multimaps;
 import com.lmax.disruptor.EventHandler;
 
 import io.toky.tokylib.ca.RegistryException;
-import io.toky.tokylib.ca.typeregistry.TypeRegistry;
+import io.toky.tokylib.ca.type.TypeRegistry;
 import net.kyori.adventure.key.Key;
 
-public class ConcurrentTypeHolder extends TypeHolder {
+public class ConcurrentTypeHolder extends TypeInstanceHolder {
 	protected final Collection<TypeRegistry> typeRegistries = new ArrayList<>();
 	protected final Multimap<Class<?>, Object> instances =
 			Multimaps.newMultimap(new ConcurrentHashMap<>(), ConcurrentHashMap::newKeySet);
@@ -31,7 +31,7 @@ public class ConcurrentTypeHolder extends TypeHolder {
 	}
 
 	@Override
-	public void addTypeRegistry(TypeRegistry typeRegistry) {
+	public void setTypeRegistry(TypeRegistry typeRegistry) {
 		typeRegistries.add(typeRegistry);
 	}
 
@@ -106,6 +106,6 @@ public class ConcurrentTypeHolder extends TypeHolder {
 	@SuppressWarnings("unchecked")
 	private <T> Class<T> getClassByID(Key id) {
 		return (Class<T>) typeRegistries.stream()
-				.map(typeRegistry -> typeRegistry.getRegistrableType(id)).findFirst().orElseThrow(() -> new RegistryException("There is no Registrables defined with given Id"));
+				.map(typeRegistry -> typeRegistry.getContentAddonType(id)).findFirst().orElseThrow(() -> new RegistryException("There is no Registrables defined with given Id"));
 	}
 }

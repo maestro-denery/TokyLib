@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.toky.tokylib.ca.DataAddonBootstrap;
-import io.toky.tokylib.ca.holder.TypeHolder;
+import io.toky.tokylib.ca.holder.TypeInstanceHolder;
 import io.toky.tokylib.ca.test.dummies.DataAddonDummy;
 import io.toky.tokylib.ca.test.dummies.DataAddonDummyLookup;
-import io.toky.tokylib.ca.typeregistry.TypeRegistry;
+import io.toky.tokylib.ca.type.TypeRegistry;
 import io.toky.tokylib.ca.test.registries.DummyHolder;
 import io.toky.tokylib.ca.test.registries.DummyTypeRegistry;
 import org.junit.jupiter.api.AfterEach;
@@ -20,13 +20,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.toky.tokylib.ca.annotation.group.GroupContainer;
-import io.toky.tokylib.ca.storeload.StoreLoadController;
+import io.toky.tokylib.ca.lookup.Lookuper;
 import io.toky.tokylib.ca.test.registries.subpkg.DummyController;
 
 class StoreLoadControllerTest {
 	TypeRegistry typeRegistry;
-	TypeHolder holder;
-	StoreLoadController controller;
+	TypeInstanceHolder holder;
+	Lookuper controller;
 
 	@BeforeEach
 	void before() {
