@@ -5,17 +5,13 @@
 
 package io.toky.tokylib.ca.test.dummies;
 
-import io.toky.tokylib.ca.annotation.Load;
 import io.toky.tokylib.ca.annotation.ContentAddon;
-import io.toky.tokylib.ca.annotation.Store;
 
 @ContentAddon(
 		identifier = "test:dummy",
-		groupTag = "dummyGroup",
-		nativeClass = DataAddonDummyLookup.NativeDummy.class,
-		lookup = DataAddonDummyLookup.class
+		lookup = ContentAddonDummyLookup.class
 )
-public class DataAddonDummy {
+public class ContentAddonDummy {
 	private String someString;
 	private String someNativeStringData;
 
@@ -29,15 +25,5 @@ public class DataAddonDummy {
 
 	public void setSomeNativeStringData(String someNativeStringData) {
 		this.someNativeStringData = someNativeStringData;
-	}
-
-	@Store
-	public void store() {
-		someString = "store";
-	}
-
-	@Load
-	public void load() {
-		someString = "load";
 	}
 }

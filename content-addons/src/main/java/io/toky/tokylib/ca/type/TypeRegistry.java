@@ -6,43 +6,41 @@
 
 package io.toky.tokylib.ca.type;
 
-import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ca.annotation.ContentAddon;
-import net.kyori.adventure.key.Key;
+import io.toky.tokylib.ca.lookup.ContentLookup;
+import net.kyori.adventure.key.Keyed;
 
 /**
  * Registry containing Unique DataAddon types where you can register and instantiate "custom" types.
  */
-public abstract class TypeRegistry {
+public abstract class TypeRegistry implements Keyed {
 	/**
 	 * Registers your types for further handling, storing and loading.
 	 * @param contentAddonType non-abstract "custom" type implementing {@link ContentAddon} interface.
 	 */
-	public abstract void register(Class<?> contentAddonType);
+	public abstract <T> ResourceKey<T> register(Class<T> contentAddonType);
 
 	/**
 	 * Checks if your {@link ContentAddon} implementation already registered.
-	 * @param registrableType non-abstract "custom" type implementing {@link ContentAddon} interface.
+	 * @param contentAddonType non-abstract "custom" type implementing {@link ContentAddon} interface.
 	 * @return true if 
 	 */
-	public abstract boolean isRegistered(Class<?> registrableType);
+	public abstract boolean isRegistered(Class<?> contentAddonType);
 
 	/**
 	 * Obtains unique identifier by its class. 
-	 * @param registrableType registered non-abstract "custom" type implementing {@link ContentAddon} interface.
+	 * @param contentAddonType registered non-abstract "custom" type implementing {@link ContentAddon} interface.
 	 * @return unique identifier.
 	 */
-	public abstract Key getIdentifier(Class<?> registrableType);
+	public abstract <T> ResourceKey<T> getKey(Class<T> contentAddonType);
 
 	/**
 	 * Obtains {@link ContentAddon} class by its unique id.
-	 * @param identifier unique id.
+	 * @param key unique id.
 	 * @return {@link ContentAddon} class.
 	 */
-	public abstract Class<?> getContentAddonType(Key identifier);
-	
-	/**
-	 * clear everything in this {@link TypeRegistry}
-	 */
-	public abstract void clearRegistry(); 
+	public abstract <T> Class<T> getContentAddonType(ResourceKey<T> key);
+
+	public abstract <T, D> ContentLookup<T, D> getContentLookup(ResourceKey<T> identifier);
 }

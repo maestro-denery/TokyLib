@@ -1,5 +1,6 @@
 package io.toky.tokylib.ca.lookup.impl;
 
+import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ca.RegistryException;
 import io.toky.tokylib.ca.holder.TypeInstanceHolder;
 import io.toky.tokylib.ca.lookup.ContentLookup;
@@ -7,50 +8,42 @@ import io.toky.tokylib.ca.lookup.Lookuper;
 import io.toky.tokylib.ca.lookup.TypeMark;
 import net.kyori.adventure.key.Key;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 public class LookuperImpl extends Lookuper {
     private TypeInstanceHolder tih;
-    private static final Map<Key, ContentLookup<?, ?>> CONTENT_LOOKUPS = new HashMap<>();
 
     @Override
-    public <T, N> void lookup(ContentLookup<T, N> lookup) {
+    public <T, S> void lookup(ContentLookup<T, S> lookup) {
         lookup.lookup().forEach(tnPair -> {
             this.tih.hold(tnPair.getFirst());
         });
     }
 
     @Override
-    public void lookup(Key identifier) {
-        this.lookup(LookuperImpl.CONTENT_LOOKUPS.computeIfAbsent(identifier, key -> {
-            try {
-                return (ContentLookup<?, ?>) this.tih.getTypeRegistry().getContentAddonType(key).getDeclaredConstructor().newInstance();
-            } catch (ReflectiveOperationException e) {
-                throw new RegistryException("Check if your content addon / lookup matches requirements", e);
-            }
-        }));
+    public <T> void lookup(ResourceKey<T> identifier) {
+        this.lookup(this.tih.getTypeRegistry().getContentLookup(identifier));
     }
 
     @Override
-    public void store(Key identifier) {
-        CONTENT_LOOKUPS.get(identifier).io();
+    public <T> void store(ResourceKey<T> identifier) {
+        ContentLookup<T, ?> lookup = this.tih.getTypeRegistry().getContentLookup(identifier);
+        lookup.io().write(this.tih.getHeld(identifier));
     }
 
     @Override
-    public void load(Key identifier) {
+    public <T> void load(ResourceKey<T> identifier) {
 
     }
 
     @Override
-    public <T, N> Optional<TypeMark<T, N>> getCustomMark(Key identifier) {
+    public <T, S> Optional<TypeMark<T, S>> getCustomMark(ResourceKey<T> identifier) {
         return Optional.empty();
     }
 
 
     @Override
-    public void setTypeHolder(TypeInstanceHolder typeInstanceHolder) {
+    public void setTIH(TypeInstanceHolder typeInstanceHolder) {
         this.tih = typeInstanceHolder;
     }
 

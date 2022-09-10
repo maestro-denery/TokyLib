@@ -11,7 +11,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import io.toky.tokylib.ca.DataAddonBootstrap;
+import io.toky.tokylib.ca.ContentAddonBootstrap;
 import io.toky.tokylib.ca.holder.TypeInstanceHolder;
 import io.toky.tokylib.ca.lookup.ContentLookup;
 import io.toky.tokylib.ca.type.TypeRegistry;
@@ -20,28 +20,18 @@ import io.toky.tokylib.ca.lookup.Lookuper;
 /**
  * Mark your class with this annotation if it represents object with additional data over some other object data
  * to connect and use it with {@link TypeRegistry}, {@link TypeInstanceHolder}, {@link Lookuper} and other infrastructure.
- * @see DataAddonBootstrap
+ * @see ContentAddonBootstrap
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ContentAddon {
 	/**
-	 * @return Unique String identifier, used in {@link TypeRegistry} and {@link TypeInstanceHolder}
+	 * @return Unique String identifier, used in {@link TypeRegistry} and {@link TypeInstanceHolder}, needs to be in a format "foo:bar".
 	 */
 	String identifier();
 
 	/**
-	 * @return Unique group tag, needs to mark relation between this DataAddon and {@link TypeRegistry}, {@link TypeInstanceHolder}, {@link Lookuper}.
-	 */
-	String groupTag();
-
-	/**
-	 * @return "Native" class which this DataAddon decorate with additional data.
-	 */
-	Class<?> nativeClass();
-
-	/**
-	 * @return "Lookup" which looks for "native" data, makes objects with this type and holds them in connected holders by group tag. 
+	 * @return A "Lookup" which has a data to perform IO operations, serialization / deserialization, looks for "native" data, makes instances with this type and holds them in a {@link TypeInstanceHolder} by a group tag.
 	 */
 	Class<? extends ContentLookup<?, ?>> lookup();
 }

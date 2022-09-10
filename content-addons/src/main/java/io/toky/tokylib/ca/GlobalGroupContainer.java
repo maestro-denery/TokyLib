@@ -6,8 +6,6 @@
 
 package io.toky.tokylib.ca;
 
-import io.toky.tokylib.ca.annotation.group.GroupContainer;
-
 /**
  * Global group container for integration of multiple projects which use this library.
  */

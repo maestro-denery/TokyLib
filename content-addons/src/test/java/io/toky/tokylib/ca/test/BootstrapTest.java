@@ -13,18 +13,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import io.toky.tokylib.ca.DataAddonBootstrap;
-import io.toky.tokylib.ca.annotation.group.GroupContainer;
+import io.toky.tokylib.ca.ContentAddonBootstrap;
+import io.toky.tokylib.ca.GroupContainer;
 import io.toky.tokylib.ca.test.registries.subpkg.DummyController;
 
 class BootstrapTest {
-	DataAddonBootstrap bootstrap = new DataAddonBootstrap();
+	ContentAddonBootstrap bootstrap = new ContentAddonBootstrap();
 
 	@BeforeEach
 	void before() {
 		bootstrap.setContainer(new GroupContainer());
 		bootstrap.bootstrapRegistries("io.toky.tokylib.ca.test.registries");
-		bootstrap.bootstrapDataAddons("io.toky.tokylib.ca.test.dummies");
+		bootstrap.bootstrapContentAddons("io.toky.tokylib.ca.test.dummies");
 	}
 
 	@AfterEach

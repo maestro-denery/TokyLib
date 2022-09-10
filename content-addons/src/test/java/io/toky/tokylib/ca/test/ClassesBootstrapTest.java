@@ -5,9 +5,9 @@
 
 package io.toky.tokylib.ca.test;
 
-import io.toky.tokylib.ca.test.dummies.DataAddonDummy;
-import io.toky.tokylib.ca.DataAddonBootstrap;
-import io.toky.tokylib.ca.annotation.group.GroupContainer;
+import io.toky.tokylib.ca.test.dummies.ContentAddonDummy;
+import io.toky.tokylib.ca.ContentAddonBootstrap;
+import io.toky.tokylib.ca.GroupContainer;
 import io.toky.tokylib.ca.test.registries.DummyHolder;
 import io.toky.tokylib.ca.test.registries.DummyTypeRegistry;
 import io.toky.tokylib.ca.test.registries.subpkg.DummyController;
@@ -19,13 +19,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ClassesBootstrapTest {
-	DataAddonBootstrap bootstrap = new DataAddonBootstrap();
+	ContentAddonBootstrap bootstrap = new ContentAddonBootstrap();
 
 	@BeforeEach
 	void before() {
 		bootstrap.setContainer(new GroupContainer());
 		bootstrap.bootstrapRegistries(DummyHolder.class, DummyTypeRegistry.class, DummyController.class);
-		bootstrap.bootstrapDataAddons(DataAddonDummy.class);
+		bootstrap.bootstrapContentAddons(ContentAddonDummy.class);
 	}
 
 	@AfterEach

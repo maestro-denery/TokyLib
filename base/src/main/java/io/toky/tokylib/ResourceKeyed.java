@@ -1,5 +1,5 @@
 package io.toky.tokylib;
 
 public interface ResourceKeyed<T> {
-    ResourceKey<T> key();
+    ResourceKey<? extends ResourceKeyed<T>> key();
 }

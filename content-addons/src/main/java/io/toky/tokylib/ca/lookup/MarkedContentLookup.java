@@ -4,17 +4,17 @@ import com.mojang.datafixers.util.Pair;
 
 import java.util.stream.Stream;
 
-public interface MarkedContentLookup<T, N> extends ContentLookup<T, N> {
+public interface MarkedContentLookup<T, S> extends ContentLookup<T, S> {
     /**
      * @return A mark, see {@link TypeMark}
      */
-    TypeMark<T, N> mark();
+    TypeMark<T, S> mark();
 
     /**
      * @return A lazy-loading lookup obtaining instances of ContentAddon instances.
      */
     @Override
-    default Stream<Pair<T, N>> lookup() {
+    default Stream<Pair<T, S>> lookup() {
         return natives().filter(n -> mark().matches(n)).map(n -> Pair.of(mark().convert(n), n));
     }
 }

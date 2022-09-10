@@ -6,6 +6,7 @@
 
 package io.toky.tokylib.ca.lookup;
 
+import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ca.annotation.ContentAddon;
 import io.toky.tokylib.ca.holder.TypeInstanceHolder;
 import net.kyori.adventure.key.Key;
@@ -35,34 +36,34 @@ public abstract class Lookuper {
 	 * Does lookup process and holds looked up instances into specified holder.
 	 * @param lookup lookup process to occur.
 	 */
-	public abstract <T, N> void lookup(ContentLookup<T, N> lookup);
+	public abstract <T, S> void lookup(ContentLookup<T, S> lookup);
 
 	/**
 	 * Does lookup process by specified {@link ContentAddon#lookup()}.
 	 */
-	public abstract void lookup(Key identifier);
+	public abstract <T> void lookup(ResourceKey<T> identifier);
 
 	/**
 	 * Stores "custom" data from every instance in specified holders by specified type.
 	 */
-	public abstract void store(Key identifier);
+	public abstract <T> void store(ResourceKey<T> identifier);
 
 	/**
 	 * Loads "custom" data in every instance in specified holders by specified type.
 	 */
-	public abstract void load(Key identifier);
+	public abstract <T> void load(ResourceKey<T> identifier);
 
 	/**
 	 * Obtain Marks by data addon types associated with them.
 	 * @return mark associated with this Data Addon type.
 	 */
-	public abstract <T, N> Optional<TypeMark<T, N>> getCustomMark(Key identifier);
+	public abstract <T, S> Optional<TypeMark<T, S>> getCustomMark(ResourceKey<T> identifier);
 
 	/**
 	 * Adds holder to this controller.
 	 * @param typeInstanceHolder holder you want to add.
 	 */
-	public abstract void setTypeHolder(TypeInstanceHolder typeInstanceHolder);
+	public abstract void setTIH(TypeInstanceHolder typeInstanceHolder);
 
 	/**
 	 * Obtains holders added in this {@link Lookuper}

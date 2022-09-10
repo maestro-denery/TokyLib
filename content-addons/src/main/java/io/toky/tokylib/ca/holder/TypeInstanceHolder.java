@@ -6,11 +6,13 @@
 
 package io.toky.tokylib.ca.holder;
 
-import java.util.Collection;
+import com.mojang.serialization.Codec;
+import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ca.annotation.ContentAddon;
 import io.toky.tokylib.ca.type.TypeRegistry;
-import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
+
+import java.util.Collection;
 
 /**
  * Class "holding" instances of {@link TypeRegistry},
@@ -39,13 +41,21 @@ public abstract class TypeInstanceHolder {
 	 * @param registrableType type of Instance you want to release.
 	 * @param <T> Type of instance you want to release.
 	 */
-	public abstract <T> void release(Class<T> registrableType);
+	public abstract <T> T release(Class<T> registrableType);
 
 	/**
 	 * Same as {@link #release(Class)} but with String identifier.
 	 * @param identifier Identifier of instances you want to release.
 	 */
-	public abstract void release(Key identifier);
+	public abstract <T> T release(ResourceKey<T> identifier);
+
+	/**
+	 * Creates a new instance of a specified content addon type and holds it into a {@link TypeInstanceHolder}.
+	 * @param identifier An identifier of a content addon you want to create instance of.
+	 * @return A new instance of a content addon
+	 * @param <T> A type of content addon.
+	 */
+	public abstract <T> T newInstance(ResourceKey<T> identifier);
 
 	/**
 	 * Checks if this holder contains the following instance.
@@ -69,7 +79,7 @@ public abstract class TypeInstanceHolder {
 	 * @param <T> Exact type of {@link ContentAddon}
 	 * @return All instances held by this holder of your specific type.
 	 */
-	public abstract <T> Collection<T> getHeld(Key identifier);
+	public abstract <T> Collection<T> getHeld(ResourceKey<T> identifier);
 
 	/**
 	 * Adds TypeRegistry checks to this holder, if you are making your implementations you need to specify TypeRegistries for your holder.
@@ -82,6 +92,8 @@ public abstract class TypeInstanceHolder {
 	 * @return All added TypeRegistries.
 	 */
 	public abstract TypeRegistry getTypeRegistry();
+
+	public abstract Codec<TypeInstanceHolder> codec();
 
 	/**
 	 * Clears all held instances from this holder.
