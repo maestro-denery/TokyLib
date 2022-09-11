@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ResourceKey<T> {
+    public static final Key ROOT = Key.key("tokylib", "resource_keyed_root");
+
     private static final Map<String, ResourceKey<?>> VALUES = new ConcurrentHashMap<>();
     private final Key registryKey;
     private final Key entryKey;
@@ -22,6 +24,10 @@ public final class ResourceKey<T> {
 
     public static <T> ResourceKey<T> create(Keyed keyed, Key entryKey) {
         return ResourceKey.create(keyed.key(), entryKey);
+    }
+
+    public static <T> ResourceKey<? extends ResourceKeyed<T>> createResourceKeyedKey(Key key) {
+        return ResourceKey.create(ResourceKey.ROOT, key);
     }
 
     private static <T> ResourceKey<T> create(Key registryKey, Key entryKey) {

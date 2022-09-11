@@ -6,7 +6,6 @@ import io.toky.tokylib.ca.holder.TypeInstanceHolder;
 import io.toky.tokylib.ca.lookup.ContentLookup;
 import io.toky.tokylib.ca.lookup.Lookuper;
 import io.toky.tokylib.ca.lookup.TypeMark;
-import net.kyori.adventure.key.Key;
 
 import java.util.Optional;
 
@@ -26,14 +25,30 @@ public class LookuperImpl extends Lookuper {
     }
 
     @Override
-    public <T> void store(ResourceKey<T> identifier) {
-        ContentLookup<T, ?> lookup = this.tih.getTypeRegistry().getContentLookup(identifier);
-        lookup.io().write(this.tih.getHeld(identifier));
+    public void store() {
+
     }
 
     @Override
-    public <T> void load(ResourceKey<T> identifier) {
+    public void load() {
 
+    }
+
+    @Override
+    public <T> void storeStandaloneFile(ResourceKey<T> identifier) {
+        final ContentLookup<T, ?> lookup = this.tih.getTypeRegistry().getContentLookup(identifier);
+        lookup.standaloneFileOps().map(ops -> ops.write(this.tih.getHeld(identifier)))
+                .orElseThrow(() -> new RegistryException("This ContentAddon doesn't support standalone file serialization."));
+    }
+
+    @Override
+    public <T> void loadStandaloneFile(ResourceKey<T> identifier) {
+        final ContentLookup<T, ?> lookup = this.tih.getTypeRegistry().getContentLookup(identifier);
+        final TypeInstanceHolder.TIHEntry<T> tihEntry = lookup.standaloneFileOps().map(ContentLookup.StandaloneFileOps::read)
+                .orElseThrow(() -> new RegistryException("This ContentAddon doesn't support standalone file serialization."))
+                .getOrThrow(false, s -> {
+                    throw new RegistryException("Something went wrong while trying to read a standalone TIHEntry file: " + s);
+                });
     }
 
     @Override

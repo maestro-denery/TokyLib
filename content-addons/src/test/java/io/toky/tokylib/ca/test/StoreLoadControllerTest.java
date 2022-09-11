@@ -54,7 +54,7 @@ class StoreLoadControllerTest {
 	void checkStore() {
 		var dummy = typeRegistry.newInstance(ContentAddonDummy.class);
 		var dummy1 = typeRegistry.newInstance(ContentAddonDummy.class);
-		controller.store(ContentAddonDummy.class);
+		controller.storeStandaloneFile(ContentAddonDummy.class);
 		assertEquals("store", dummy.getSomeString());
 		assertEquals("store", dummy1.getSomeString());
 	}
@@ -63,7 +63,7 @@ class StoreLoadControllerTest {
 	void checkLoad() {
 		var dummy = typeRegistry.newInstance(ContentAddonDummy.class);
 		var dummy1 = typeRegistry.newInstance(ContentAddonDummy.class);
-		controller.load(ContentAddonDummy.class);
+		controller.loadStandaloneFile(ContentAddonDummy.class);
 		assertEquals("load", dummy.getSomeString());
 		assertEquals("load", dummy1.getSomeString());
 	}
@@ -71,7 +71,7 @@ class StoreLoadControllerTest {
 	@Test
 	void checkLookup() {
 		controller.lookup(new ContentAddonDummyLookup());
-		controller.load(ContentAddonDummy.class);
+		controller.loadStandaloneFile(ContentAddonDummy.class);
 		ContentAddonDummy dummy = holder.getHeld(ContentAddonDummy.class).stream().findFirst().get();
 		assertEquals("native1", dummy.getSomeNativeStringData());
 		assertEquals("load", dummy.getSomeString());
@@ -88,7 +88,7 @@ class StoreLoadControllerTest {
 	@Test
 	void checkLookupClass() {
 		controller.lookup(ContentAddonDummy.class);
-		controller.load(ContentAddonDummy.class);
+		controller.loadStandaloneFile(ContentAddonDummy.class);
 		ContentAddonDummy dummy = holder.getHeld(ContentAddonDummy.class).stream().findFirst().get();
 		assertEquals("native1", dummy.getSomeNativeStringData());
 		assertEquals("load", dummy.getSomeString());

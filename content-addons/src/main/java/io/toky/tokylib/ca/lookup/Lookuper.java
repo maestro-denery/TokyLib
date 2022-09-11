@@ -46,12 +46,17 @@ public abstract class Lookuper {
 	/**
 	 * Stores "custom" data from every instance in specified holders by specified type.
 	 */
-	public abstract <T> void store(ResourceKey<T> identifier);
+	public abstract void store();
 
 	/**
 	 * Loads "custom" data in every instance in specified holders by specified type.
 	 */
-	public abstract <T> void load(ResourceKey<T> identifier);
+	public abstract void load();
+
+
+	public abstract <T> void storeStandaloneFile(ResourceKey<T> identifier);
+
+	public abstract <T> void loadStandaloneFile(ResourceKey<T> identifier);
 
 	/**
 	 * Obtain Marks by data addon types associated with them.
