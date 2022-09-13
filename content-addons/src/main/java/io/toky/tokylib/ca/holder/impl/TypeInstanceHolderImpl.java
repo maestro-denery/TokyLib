@@ -3,16 +3,15 @@ package io.toky.tokylib.ca.holder.impl;
 import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ResourceKeyed;
 import io.toky.tokylib.ca.RegistryException;
-import io.toky.tokylib.ca.holder.TypeInstanceHolder;
-import io.toky.tokylib.ca.type.TypeRegistry;
+import io.toky.tokylib.ca.holder.ContentAddonContainer;
+import io.toky.tokylib.ca.type.ContentAddonRegistry;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-
-public class TypeInstanceHolderImpl extends TypeInstanceHolder {
-    protected TypeRegistry typeRegistry;
+public class TypeInstanceHolderImpl extends ContentAddonContainer {
+    protected ContentAddonRegistry contentAddonRegistry;
     protected final Map<ResourceKey<? extends ResourceKeyed<?>>, TIHEntry<?>> instances = new HashMap<>();
 
     @Override
@@ -43,12 +42,12 @@ public class TypeInstanceHolderImpl extends TypeInstanceHolder {
     }
 
     public <T> @NotNull Optional<TIHEntry<T>> release(@NotNull ResourceKey<T> identifier) {
-        return this.release(typeRegistry.getContentAddonType(identifier));
+        return this.release(contentAddonRegistry.getContentAddonType(identifier));
     }
 
     @Override
     public <T> @NotNull T newInstance(@NotNull ResourceKey<T> identifier) {
-        final Class<T> contentAddonType = this.typeRegistry.getContentAddonType(identifier);
+        final Class<T> contentAddonType = this.contentAddonRegistry.getContentAddonType(identifier);
         this.checkRegistered(contentAddonType);
         try {
             final T instance = contentAddonType.getDeclaredConstructor().newInstance();
@@ -78,13 +77,13 @@ public class TypeInstanceHolderImpl extends TypeInstanceHolder {
     }
 
     @Override
-    public void setTypeRegistry(@NotNull TypeRegistry typeRegistry) {
-        this.typeRegistry = typeRegistry;
+    public void setTypeRegistry(@NotNull ContentAddonRegistry contentAddonRegistry) {
+        this.contentAddonRegistry = contentAddonRegistry;
     }
 
     @Override
-    public @NotNull TypeRegistry getTypeRegistry() {
-        return this.typeRegistry;
+    public @NotNull ContentAddonRegistry getTypeRegistry() {
+        return this.contentAddonRegistry;
     }
 
     @Override
@@ -93,7 +92,7 @@ public class TypeInstanceHolderImpl extends TypeInstanceHolder {
     }
 
     public <T> void checkRegistered(Class<T> clazz) {
-        if (this.typeRegistry.isRegistered(clazz)) throw new RegistryException("The class you are trying to hold in a TIH hasn't registered yet: " + clazz);
+        if (this.contentAddonRegistry.isRegistered(clazz)) throw new RegistryException("The class you are trying to hold in a TIH hasn't registered yet: " + clazz);
     }
 
     private <T> Class<T> getClass(T t) {
@@ -101,7 +100,7 @@ public class TypeInstanceHolderImpl extends TypeInstanceHolder {
     }
 
     private <T> ResourceKey<? extends ResourceKeyed<T>> getResourceKeyedKey(Class<T> contentAddonType) {
-        return ResourceKey.createResourceKeyedKey(typeRegistry.getKey(contentAddonType).entryKey());
+        return ResourceKey.createResourceKeyedKey(contentAddonRegistry.getKey(contentAddonType).entryKey());
     }
 
     private <T> TIHEntry<T> getC(ResourceKey<? extends ResourceKeyed<T>> resourceKeyedKey) {

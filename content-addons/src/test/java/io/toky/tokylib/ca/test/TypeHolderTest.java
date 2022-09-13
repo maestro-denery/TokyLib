@@ -12,7 +12,7 @@ import java.util.List;
 import io.toky.tokylib.ca.ContentAddonBootstrap;
 import io.toky.tokylib.ca.holder.eventsourcing.ConcurrentEventTypeHolder;
 import io.toky.tokylib.ca.test.dummies.ContentAddonDummy;
-import io.toky.tokylib.ca.type.TypeRegistry;
+import io.toky.tokylib.ca.type.ContentAddonRegistry;
 import io.toky.tokylib.ca.test.registries.DummyHolder;
 import io.toky.tokylib.ca.test.registries.DummyTypeRegistry;
 import net.kyori.adventure.key.Key;
@@ -25,14 +25,14 @@ import io.toky.tokylib.ca.GroupContainer;
 class TypeHolderTest {
 	ContentAddonBootstrap dataAddonBootstrap = new ContentAddonBootstrap();
 	ConcurrentEventTypeHolder holder;
-	TypeRegistry typeRegistry;
+	ContentAddonRegistry contentAddonRegistry;
 
 	@BeforeEach
 	void before() {
 		dataAddonBootstrap.setContainer(new GroupContainer());
 		dataAddonBootstrap.bootstrapRegistries("io.toky.tokylib.ca.test.registries");
 		dataAddonBootstrap.bootstrapContentAddons("io.toky.tokylib.ca.test.dummies");
-		typeRegistry = dataAddonBootstrap.getRegistry(DummyTypeRegistry.class);
+		contentAddonRegistry = dataAddonBootstrap.getRegistry(DummyTypeRegistry.class);
 		holder = dataAddonBootstrap.getRegistry(DummyHolder.class);
 	}
 
@@ -55,26 +55,26 @@ class TypeHolderTest {
 
 	@Test
 	void checkGetType() {
-		var dummy = typeRegistry.newInstance(ContentAddonDummy.class);
+		var dummy = contentAddonRegistry.newInstance(ContentAddonDummy.class);
 		assertIterableEquals(List.of(dummy), holder.getHeld(ContentAddonDummy.class));
 	}
 
 	@Test
 	void checkGetID() {
-		var dummy = typeRegistry.newInstance(ContentAddonDummy.class);
+		var dummy = contentAddonRegistry.newInstance(ContentAddonDummy.class);
 		assertIterableEquals(List.of(dummy), holder.getHeld(Key.key("test:dummy")));
 	}
 
 	@Test
 	void checkContains() {
-		var dummy = typeRegistry.newInstance(ContentAddonDummy.class);
+		var dummy = contentAddonRegistry.newInstance(ContentAddonDummy.class);
 		assertTrue(holder.containsInstance(dummy));
 	}
 
 	@Test
 	void checkRelease() {
-		var dummy = typeRegistry.newInstance(ContentAddonDummy.class);
-		var dummy1 = typeRegistry.newInstance(ContentAddonDummy.class);
+		var dummy = contentAddonRegistry.newInstance(ContentAddonDummy.class);
+		var dummy1 = contentAddonRegistry.newInstance(ContentAddonDummy.class);
 		holder.release(dummy);
 		assertFalse(holder.containsInstance(dummy));
 		assertTrue(holder.containsInstance(dummy1));
@@ -82,8 +82,8 @@ class TypeHolderTest {
 
 	@Test
 	void checkReleaseClass() {
-		var dummy = typeRegistry.newInstance(ContentAddonDummy.class);
-		var dummy1 = typeRegistry.newInstance(ContentAddonDummy.class);
+		var dummy = contentAddonRegistry.newInstance(ContentAddonDummy.class);
+		var dummy1 = contentAddonRegistry.newInstance(ContentAddonDummy.class);
 		holder.release(ContentAddonDummy.class);
 		assertFalse(holder.containsInstance(dummy));
 		assertFalse(holder.containsInstance(dummy1));
@@ -91,8 +91,8 @@ class TypeHolderTest {
 
 	@Test
 	void checkReleaseID() {
-		var dummy = typeRegistry.newInstance(ContentAddonDummy.class);
-		var dummy1 = typeRegistry.newInstance(ContentAddonDummy.class);
+		var dummy = contentAddonRegistry.newInstance(ContentAddonDummy.class);
+		var dummy1 = contentAddonRegistry.newInstance(ContentAddonDummy.class);
 		holder.release(Key.key("test:dummy"));
 		assertFalse(holder.containsInstance(dummy));
 		assertFalse(holder.containsInstance(dummy1));

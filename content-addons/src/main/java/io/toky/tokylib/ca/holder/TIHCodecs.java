@@ -14,7 +14,7 @@ import java.util.Map;
 public final class TIHCodecs {
     private TIHCodecs() {}
 
-    public static <T, K extends ResourceKey<? extends ResourceKeyed<?>>, V extends TypeInstanceHolder.TIHEntry<?>> Codec<TypeInstanceHolder> typeInstanceHolderCodec(
+    public static <T, K extends ResourceKey<? extends ResourceKeyed<?>>, V extends ContentAddonContainer.TIHEntry<?>> Codec<ContentAddonContainer> typeInstanceHolderCodec(
             ResourceKey<? extends ResourceKeyed<T>> key,
             Codec<T> elementCodec
     ) {
@@ -22,31 +22,31 @@ public final class TIHCodecs {
         return unboundedMapCodec.xmap(resourceKeyTIHEntryMap -> {
             final TypeInstanceHolderImpl typeInstanceHolder = new TypeInstanceHolderImpl();
             resourceKeyTIHEntryMap.forEach((resourceKey, instances) -> {
-                typeInstanceHolder.holdAll((ResourceKey<? extends ResourceKeyed<T>>) resourceKey, (TypeInstanceHolder.TIHEntry<T>) instances);
+                typeInstanceHolder.holdAll((ResourceKey<? extends ResourceKeyed<T>>) resourceKey, (ContentAddonContainer.TIHEntry<T>) instances);
             });
             return typeInstanceHolder;
         }, typeInstanceHolder -> (Map<K, V>) ((TypeInstanceHolderImpl) typeInstanceHolder).getInstancesInternalMap());
     }
 
-    public static <T> UnboundedMapCodec<? extends ResourceKey<? extends ResourceKeyed<?>>, ? extends TypeInstanceHolder.TIHEntry<?>> rawTIHCodec(
+    public static <T> UnboundedMapCodec<? extends ResourceKey<? extends ResourceKeyed<?>>, ? extends ContentAddonContainer.TIHEntry<?>> rawTIHCodec(
             ResourceKey<? extends ResourceKeyed<T>> key,
             Codec<T> elementCodec
     ) {
-        Pair<Codec<ResourceKey<? extends ResourceKeyed<T>>>, Codec<TypeInstanceHolder.TIHEntry<T>>> codecCodecPair =
+        Pair<Codec<ResourceKey<? extends ResourceKeyed<T>>>, Codec<ContentAddonContainer.TIHEntry<T>>> codecCodecPair =
                 TIHCodecs.standaloneFileCodec(key, elementCodec);
         return Codec.unboundedMap(codecCodecPair.getFirst(), codecCodecPair.getSecond());
     }
 
-    public static <T> Pair<Codec<ResourceKey<? extends ResourceKeyed<T>>>, Codec<TypeInstanceHolder.TIHEntry<T>>> standaloneFileCodec(
+    public static <T> Pair<Codec<ResourceKey<? extends ResourceKeyed<T>>>, Codec<ContentAddonContainer.TIHEntry<T>>> standaloneFileCodec(
             ResourceKey<? extends ResourceKeyed<T>> key,
-            Codec<T> elementCodec
+            ContentAddonContainer tih
     ) {
         final Codec<ResourceKey<? extends ResourceKeyed<T>>> codec = KeyCodecs.KEY_CODEC.xmap(ResourceKey::createResourceKeyedKey, ResourceKey::entryKey);
-        final Codec<TypeInstanceHolder.TIHEntry<T>> tihEntryCodec = elementCodec.listOf().xmap(
-                ts -> new TypeInstanceHolder.TIHEntry<>(key, ts),
+        final Codec<ContentAddonContainer.TIHEntry<T>> tihEntryCodec = tih.release().listOf().xmap(
+                ts -> new ContentAddonContainer.TIHEntry<>(key, ts),
                 tihEntry -> tihEntry.stream().toList()
         );
-        Codec<TypeInstanceHolder.TIHEntry<T>> type = codec.partialDispatch("type",
+        Codec<ContentAddonContainer.TIHEntry<T>> type = codec.partialDispatch("type",
                 keyedColl -> DataResult.success(keyedColl.key()),
                 rkey -> DataResult.success(tihEntryCodec)
         );

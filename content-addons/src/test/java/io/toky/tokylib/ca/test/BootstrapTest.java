@@ -7,8 +7,12 @@ package io.toky.tokylib.ca.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import io.toky.tokylib.ca.holder.ContentAddonContainer;
+import io.toky.tokylib.ca.lookup.DataLookerUpper;
 import io.toky.tokylib.ca.test.registries.DummyHolder;
 import io.toky.tokylib.ca.test.registries.DummyTypeRegistry;
+import io.toky.tokylib.ca.type.ContentAddonRegistry;
+import net.kyori.adventure.key.Key;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,11 +23,12 @@ import io.toky.tokylib.ca.test.registries.subpkg.DummyController;
 
 class BootstrapTest {
 	ContentAddonBootstrap bootstrap = new ContentAddonBootstrap();
+	final Key key = Key.key("test", "dummy_type_registry");
 
 	@BeforeEach
 	void before() {
 		bootstrap.setContainer(new GroupContainer());
-		bootstrap.bootstrapRegistries("io.toky.tokylib.ca.test.registries");
+		bootstrap.bootstrapSystem(ContentAddonRegistry.create(key), ContentAddonContainer.create(), DataLookerUpper.create());
 		bootstrap.bootstrapContentAddons("io.toky.tokylib.ca.test.dummies");
 	}
 

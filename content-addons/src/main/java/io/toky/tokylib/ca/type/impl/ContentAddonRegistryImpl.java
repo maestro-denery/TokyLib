@@ -7,7 +7,7 @@ import io.toky.tokylib.ca.ContentAddonBootstrap;
 import io.toky.tokylib.ca.RegistryException;
 import io.toky.tokylib.ca.annotation.ContentAddon;
 import io.toky.tokylib.ca.lookup.ContentLookup;
-import io.toky.tokylib.ca.type.TypeRegistry;
+import io.toky.tokylib.ca.type.ContentAddonRegistry;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ApiStatus.Internal
-public class TypeRegistryImpl extends TypeRegistry {
+public class ContentAddonRegistryImpl extends ContentAddonRegistry {
     protected final Map<Key, ContentLookup<?, ?>> contentLookups = new HashMap<>();
     protected final BiMap<Key, Class<?>> registryBiMap = HashBiMap.create();
     protected final Key key;
 
-    public TypeRegistryImpl(Key key) {
+    public ContentAddonRegistryImpl(Key key) {
         this.key = key;
     }
 

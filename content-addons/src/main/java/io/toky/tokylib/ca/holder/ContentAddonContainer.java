@@ -10,18 +10,18 @@ import io.toky.tokylib.DelegatingResourceKeyedCollection;
 import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ResourceKeyed;
 import io.toky.tokylib.ca.annotation.ContentAddon;
-import io.toky.tokylib.ca.type.TypeRegistry;
-import net.kyori.adventure.key.Key;
+import io.toky.tokylib.ca.holder.impl.TypeInstanceHolderImpl;
+import io.toky.tokylib.ca.type.ContentAddonRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Optional;
 
 /**
- * Class "holding" instances of {@link TypeRegistry},
+ * Class "holding" instances of {@link ContentAddonRegistry},
  * it is needed when you need to handle your "custom" types marked with {@link ContentAddon}.
  */
-public abstract class TypeInstanceHolder {
+public abstract class ContentAddonContainer {
 
 	/**
 	 * "Holds" your {@link ContentAddon} instance until {@link #release(Class)} or {@link #clearHeld()}.
@@ -60,7 +60,7 @@ public abstract class TypeInstanceHolder {
 	public abstract <T> Optional<TIHEntry<T>> release(@NotNull ResourceKey<T> identifier);
 
 	/**
-	 * Creates a new instance of a specified content addon type and holds it into a {@link TypeInstanceHolder}.
+	 * Creates a new instance of a specified content addon type and holds it into a {@link ContentAddonContainer}.
 	 * @param identifier An identifier of a content addon you want to create instance of.
 	 * @return A new instance of a content addon
 	 * @param <T> A type of content addon.
@@ -96,21 +96,25 @@ public abstract class TypeInstanceHolder {
 
 	/**
 	 * Adds TypeRegistry checks to this holder, if you are making your implementations you need to specify TypeRegistries for your holder.
-	 * @param typeRegistry {@link TypeRegistry} you want to check in this holder.
+	 * @param contentAddonRegistry {@link ContentAddonRegistry} you want to check in this holder.
 	 */
-	public abstract void setTypeRegistry(@NotNull TypeRegistry typeRegistry);
+	public abstract void setTypeRegistry(@NotNull ContentAddonRegistry contentAddonRegistry);
 
 	/**
-	 * Obtains TypeRegistries added in this {@link TypeInstanceHolder}
+	 * Obtains TypeRegistries added in this {@link ContentAddonContainer}
 	 * @return All added TypeRegistries.
 	 */
 	@NotNull
-	public abstract TypeRegistry getTypeRegistry();
+	public abstract ContentAddonRegistry getTypeRegistry();
 
 	/**
 	 * Clears all held instances from this holder.
 	 */
 	public abstract void clearHeld();
+
+	public static ContentAddonContainer create() {
+		return new TypeInstanceHolderImpl();
+	}
 
 	public static class TIHEntry<T> extends DelegatingResourceKeyedCollection<T> { // Maybe in the future we'll need some functional in it.
 		protected TIHEntry(ResourceKey<? extends ResourceKeyed<T>> key, Collection<T> collection) {

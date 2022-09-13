@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import io.toky.tokylib.ca.GroupContainer;
 import io.toky.tokylib.ca.test.registries.DummyTypeRegistry;
 
-class DefaultTypeRegistryTest {
+class DefaultContentAddonRegistryTest {
 	ContentAddonBootstrap dataAddonBootstrap = new ContentAddonBootstrap();
 	DefaultTypeRegistry registry;
 	

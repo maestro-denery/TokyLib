@@ -8,7 +8,8 @@ package io.toky.tokylib.ca.lookup;
 
 import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ca.annotation.ContentAddon;
-import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ca.holder.ContentAddonContainer;
+import io.toky.tokylib.ca.lookup.impl.DataLookerUpperImpl;
 import net.kyori.adventure.key.Key;
 
 import java.util.Optional;
@@ -31,7 +32,7 @@ import java.util.Optional;
  * <p>
  * And congrats! You have fully configured "CustomEntity" instances in your holder, so you can handle with them in the way you prefer.
  */
-public abstract class Lookuper {
+public abstract class DataLookerUpper {
 	/**
 	 * Does lookup process and holds looked up instances into specified holder.
 	 * @param lookup lookup process to occur.
@@ -68,11 +69,15 @@ public abstract class Lookuper {
 	 * Adds holder to this controller.
 	 * @param typeInstanceHolder holder you want to add.
 	 */
-	public abstract void setTIH(TypeInstanceHolder typeInstanceHolder);
+	public abstract void setTIH(ContentAddonContainer typeInstanceHolder);
 
 	/**
-	 * Obtains holders added in this {@link Lookuper}
+	 * Obtains holders added in this {@link DataLookerUpper}
 	 * @return All added holders.
 	 */
-	public abstract TypeInstanceHolder getTypeHolder();
+	public abstract ContentAddonContainer getTypeHolder();
+
+	public static DataLookerUpper create() {
+		return new DataLookerUpperImpl();
+	}
 }

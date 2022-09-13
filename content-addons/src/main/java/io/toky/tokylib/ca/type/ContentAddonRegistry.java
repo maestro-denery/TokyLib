@@ -9,13 +9,15 @@ package io.toky.tokylib.ca.type;
 import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ca.annotation.ContentAddon;
 import io.toky.tokylib.ca.lookup.ContentLookup;
+import io.toky.tokylib.ca.type.impl.ContentAddonRegistryImpl;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Registry containing Unique DataAddon types where you can register and instantiate "custom" types.
  */
-public abstract class TypeRegistry implements Keyed {
+public abstract class ContentAddonRegistry implements Keyed {
 	/**
 	 * Registers your types for further handling, storing and loading.
 	 * @param contentAddonType non-abstract "custom" type implementing {@link ContentAddon} interface.
@@ -48,4 +50,9 @@ public abstract class TypeRegistry implements Keyed {
 
 	@NotNull
 	public abstract <T, D> ContentLookup<T, D> getContentLookup(@NotNull ResourceKey<T> identifier);
+
+    @NotNull
+    public static ContentAddonRegistry create(@NotNull Key key) {
+        return new ContentAddonRegistryImpl(key);
+    }
 }

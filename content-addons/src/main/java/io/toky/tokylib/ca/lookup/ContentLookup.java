@@ -8,7 +8,7 @@ import com.mojang.serialization.DynamicOps;
 import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ResourceKeyed;
 import io.toky.tokylib.ca.holder.TIHCodecs;
-import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ca.holder.ContentAddonContainer;
 import io.toky.tokylib.io.IO;
 
 import java.io.File;
@@ -32,7 +32,7 @@ public interface ContentLookup<T, S> {
         private final Codec<T> elementCodec;
         private final DynamicOps<D> ops;
         private final File dataFile;
-        final Codec<TypeInstanceHolder.TIHEntry<T>> standaloneFileCodec;
+        final Codec<ContentAddonContainer.TIHEntry<T>> standaloneFileCodec;
         public StandaloneFileOps(IO<D> io, ResourceKey<? extends ResourceKeyed<T>> key, Codec<T> elementCodec, DynamicOps<D> ops, File dataFile) {
             this.io = io;
             this.elementCodec = elementCodec;
@@ -41,11 +41,11 @@ public interface ContentLookup<T, S> {
             this.standaloneFileCodec = TIHCodecs.standaloneFileCodec(key, elementCodec).getSecond();
         }
 
-        public DataResult<TypeInstanceHolder.TIHEntry<T>> read() {
+        public DataResult<ContentAddonContainer.TIHEntry<T>> read() {
             return io.read(dataFile).flatMap(dataFormat -> standaloneFileCodec.parse(this.ops, dataFormat));
         }
 
-        public DataResult<Unit> write(final TypeInstanceHolder.TIHEntry<T> t) {
+        public DataResult<Unit> write(final ContentAddonContainer.TIHEntry<T> t) {
             return this.standaloneFileCodec.encodeStart(ops, t).flatMap(data -> io.write(data, dataFile));
         }
     }

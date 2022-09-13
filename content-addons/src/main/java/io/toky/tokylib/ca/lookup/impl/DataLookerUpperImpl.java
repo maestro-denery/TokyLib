@@ -2,15 +2,15 @@ package io.toky.tokylib.ca.lookup.impl;
 
 import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ca.RegistryException;
-import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ca.holder.ContentAddonContainer;
 import io.toky.tokylib.ca.lookup.ContentLookup;
-import io.toky.tokylib.ca.lookup.Lookuper;
+import io.toky.tokylib.ca.lookup.DataLookerUpper;
 import io.toky.tokylib.ca.lookup.TypeMark;
 
 import java.util.Optional;
 
-public class LookuperImpl extends Lookuper {
-    private TypeInstanceHolder tih;
+public class DataLookerUpperImpl extends DataLookerUpper {
+    private ContentAddonContainer tih;
 
     @Override
     public <T, S> void lookup(ContentLookup<T, S> lookup) {
@@ -44,7 +44,7 @@ public class LookuperImpl extends Lookuper {
     @Override
     public <T> void loadStandaloneFile(ResourceKey<T> identifier) {
         final ContentLookup<T, ?> lookup = this.tih.getTypeRegistry().getContentLookup(identifier);
-        final TypeInstanceHolder.TIHEntry<T> tihEntry = lookup.standaloneFileOps().map(ContentLookup.StandaloneFileOps::read)
+        final ContentAddonContainer.TIHEntry<T> tihEntry = lookup.standaloneFileOps().map(ContentLookup.StandaloneFileOps::read)
                 .orElseThrow(() -> new RegistryException("This ContentAddon doesn't support standalone file serialization."))
                 .getOrThrow(false, s -> {
                     throw new RegistryException("Something went wrong while trying to read a standalone TIHEntry file: " + s);
@@ -58,12 +58,12 @@ public class LookuperImpl extends Lookuper {
 
 
     @Override
-    public void setTIH(TypeInstanceHolder typeInstanceHolder) {
+    public void setTIH(ContentAddonContainer typeInstanceHolder) {
         this.tih = typeInstanceHolder;
     }
 
     @Override
-    public TypeInstanceHolder getTypeHolder() {
+    public ContentAddonContainer getTypeHolder() {
         return this.tih;
     }
 }

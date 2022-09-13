@@ -4,19 +4,19 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ca.holder.TIHCodecs;
-import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ca.holder.ContentAddonContainer;
 import io.toky.tokylib.ca.holder.impl.TypeInstanceHolderImpl;
-import io.toky.tokylib.ca.type.TypeRegistry;
-import io.toky.tokylib.ca.type.impl.TypeRegistryImpl;
+import io.toky.tokylib.ca.type.ContentAddonRegistry;
+import io.toky.tokylib.ca.type.impl.ContentAddonRegistryImpl;
 import net.kyori.adventure.key.Key;
 import org.junit.jupiter.api.Test;
 
 class TIHCodecsTest {
     @Test
     void check() {
-        TypeInstanceHolder tih = new TypeInstanceHolderImpl();
+        ContentAddonContainer tih = new TypeInstanceHolderImpl();
         Key test_type_reg = Key.key("test_type_reg");
-        TypeRegistry tr = new TypeRegistryImpl(test_type_reg);
+        ContentAddonRegistry tr = new ContentAddonRegistryImpl(test_type_reg);
         TIHCodecs.typeInstanceHolderCodec(ResourceKey.createResourceKeyedKey(test_type_reg), Some.CODEC);
     }
 

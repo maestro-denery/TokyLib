@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.toky.tokylib.ca.ContentAddonBootstrap;
-import io.toky.tokylib.ca.holder.TypeInstanceHolder;
+import io.toky.tokylib.ca.holder.ContentAddonContainer;
 import io.toky.tokylib.ca.test.dummies.ContentAddonDummy;
 import io.toky.tokylib.ca.test.dummies.ContentAddonDummyLookup;
-import io.toky.tokylib.ca.type.TypeRegistry;
+import io.toky.tokylib.ca.type.ContentAddonRegistry;
 import io.toky.tokylib.ca.test.registries.DummyHolder;
 import io.toky.tokylib.ca.test.registries.DummyTypeRegistry;
 import org.junit.jupiter.api.AfterEach;
@@ -20,13 +20,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.toky.tokylib.ca.GroupContainer;
-import io.toky.tokylib.ca.lookup.Lookuper;
+import io.toky.tokylib.ca.lookup.DataLookerUpper;
 import io.toky.tokylib.ca.test.registries.subpkg.DummyController;
 
 class StoreLoadControllerTest {
-	TypeRegistry typeRegistry;
-	TypeInstanceHolder holder;
-	Lookuper controller;
+	ContentAddonRegistry contentAddonRegistry;
+	ContentAddonContainer holder;
+	DataLookerUpper controller;
 
 	@BeforeEach
 	void before() {
@@ -36,7 +36,7 @@ class StoreLoadControllerTest {
 		dataAddonBootstrap.bootstrapRegistries("io.toky.tokylib.ca.test.registries");
 		dataAddonBootstrap.bootstrapContentAddons("io.toky.tokylib.ca.test.dummies");
 
-		typeRegistry = dataAddonBootstrap.getRegistry(DummyTypeRegistry.class);
+		contentAddonRegistry = dataAddonBootstrap.getRegistry(DummyTypeRegistry.class);
 		holder = dataAddonBootstrap.getRegistry(DummyHolder.class);
 		controller = dataAddonBootstrap.getRegistry(DummyController.class);
 	}
@@ -44,16 +44,16 @@ class StoreLoadControllerTest {
 	@AfterEach
 	void after() {
 		holder.clearHeld();
-		typeRegistry.clearRegistry();
-		typeRegistry = null;
+		contentAddonRegistry.clearRegistry();
+		contentAddonRegistry = null;
 		holder = null;
 		controller = null;
 	}
 
 	@Test
 	void checkStore() {
-		var dummy = typeRegistry.newInstance(ContentAddonDummy.class);
-		var dummy1 = typeRegistry.newInstance(ContentAddonDummy.class);
+		var dummy = contentAddonRegistry.newInstance(ContentAddonDummy.class);
+		var dummy1 = contentAddonRegistry.newInstance(ContentAddonDummy.class);
 		controller.storeStandaloneFile(ContentAddonDummy.class);
 		assertEquals("store", dummy.getSomeString());
 		assertEquals("store", dummy1.getSomeString());
@@ -61,8 +61,8 @@ class StoreLoadControllerTest {
 
 	@Test
 	void checkLoad() {
-		var dummy = typeRegistry.newInstance(ContentAddonDummy.class);
-		var dummy1 = typeRegistry.newInstance(ContentAddonDummy.class);
+		var dummy = contentAddonRegistry.newInstance(ContentAddonDummy.class);
+		var dummy1 = contentAddonRegistry.newInstance(ContentAddonDummy.class);
 		controller.loadStandaloneFile(ContentAddonDummy.class);
 		assertEquals("load", dummy.getSomeString());
 		assertEquals("load", dummy1.getSomeString());

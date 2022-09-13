@@ -11,9 +11,9 @@ import java.util.List;
 
 import com.google.common.reflect.ClassPath;
 
-import io.toky.tokylib.ca.holder.TypeInstanceHolder;
-import io.toky.tokylib.ca.lookup.Lookuper;
-import io.toky.tokylib.ca.type.TypeRegistry;
+import io.toky.tokylib.ca.holder.ContentAddonContainer;
+import io.toky.tokylib.ca.lookup.DataLookerUpper;
+import io.toky.tokylib.ca.type.ContentAddonRegistry;
 import io.toky.tokylib.ca.annotation.ContentAddon;
 
 /**
@@ -41,10 +41,10 @@ public final class ContentAddonBootstrap {
 		ContentAddonBootstrap.connectContentAddons(container);
 	}
 
-	public void bootstrapSystem(final TypeRegistry typeRegistry, final TypeInstanceHolder tih, final Lookuper lookuper) {
-		this.container.registerTR(typeRegistry);
+	public void bootstrapSystem(final ContentAddonRegistry contentAddonRegistry, final ContentAddonContainer tih, final DataLookerUpper dataLookerUpper) {
+		this.container.registerTR(contentAddonRegistry);
 		this.container.registerTIH(tih);
-		this.container.registerLookuper(lookuper);
+		this.container.registerLookuper(dataLookerUpper);
 	}
 
 	/**
@@ -69,24 +69,19 @@ public final class ContentAddonBootstrap {
 	}
 
 	public static void connectGroupsInContainer(GroupContainer repository) {
-		final TypeInstanceHolder tih = repository.tih();
+		final ContentAddonContainer tih = repository.tih();
 		repository.lookuper().setTIH(tih);
 		tih.setTypeRegistry(repository.typeRegistry());
 	}
 
 	public static void connectContentAddons(GroupContainer repository) {
-		final TypeRegistry typeRegistry = repository.typeRegistry();
+		final ContentAddonRegistry contentAddonRegistry = repository.typeRegistry();
 		for (Class<?> value : repository.contentAddons().values()) {
-			typeRegistry.register(value);
+			contentAddonRegistry.register(value);
 		}
 	}
 
 	public static void checkAnnotation(Class<?> clazz) {
 		if (!clazz.isAnnotationPresent(ContentAddon.class)) throw new RegistryException("Type: " + clazz.getSimpleName() + " has no annotation");
-	}
-
-	public <T> ContentAddon getDataAddonInfo(Class<T> clazz) {
-		if (!container.contentAddons().values().contains(clazz)) throw new RegistryException("This DataAddon doesn't registered in this bootstrap!");
-		return clazz.getAnnotation(ContentAddon.class);
 	}
 }

@@ -8,11 +8,10 @@ package io.toky.tokylib.ca;
 
 
 import com.google.common.collect.ImmutableMap;
-import io.toky.tokylib.ca.ContentAddonBootstrap;
 import io.toky.tokylib.ca.annotation.ContentAddon;
-import io.toky.tokylib.ca.holder.TypeInstanceHolder;
-import io.toky.tokylib.ca.lookup.Lookuper;
-import io.toky.tokylib.ca.type.TypeRegistry;
+import io.toky.tokylib.ca.holder.ContentAddonContainer;
+import io.toky.tokylib.ca.lookup.DataLookerUpper;
+import io.toky.tokylib.ca.type.ContentAddonRegistry;
 import net.kyori.adventure.key.Key;
 
 import java.util.HashMap;
@@ -23,35 +22,35 @@ import java.util.Map;
  */
 public class GroupContainer {
 	private final Map<Key, Class<?>> contentAddons = new HashMap<>();
-	private TypeRegistry tr;
-	private TypeInstanceHolder tih;
-	private Lookuper lookuper;
+	private ContentAddonRegistry tr;
+	private ContentAddonContainer tih;
+	private DataLookerUpper dataLookerUpper;
 
-	public void registerTR(TypeRegistry tr) {
+	public void registerTR(ContentAddonRegistry tr) {
 		if (this.tr != null) throw new RuntimeException("TR is already registered in a GroupContainer!");
 		this.tr = tr;
 	}
 
-	public void registerTIH(TypeInstanceHolder tih) {
+	public void registerTIH(ContentAddonContainer tih) {
 		if (this.tih != null) throw new RuntimeException("TIH is already registered in a GroupContainer!");
 		this.tih = tih;
 	}
 
-	public void registerLookuper(Lookuper lookuper) {
-		if (this.lookuper != null) throw new RuntimeException("Lookuper is already registered in a GroupContainer!");
-		this.lookuper = lookuper;
+	public void registerLookuper(DataLookerUpper dataLookerUpper) {
+		if (this.dataLookerUpper != null) throw new RuntimeException("Lookuper is already registered in a GroupContainer!");
+		this.dataLookerUpper = dataLookerUpper;
 	}
 
-	public TypeRegistry typeRegistry() {
+	public ContentAddonRegistry typeRegistry() {
 		return tr;
 	}
 
-	public TypeInstanceHolder tih() {
+	public ContentAddonContainer tih() {
 		return tih;
 	}
 
-	public Lookuper lookuper() {
-		return lookuper;
+	public DataLookerUpper lookuper() {
+		return dataLookerUpper;
 	}
 
 	public ImmutableMap<Key, Class<?>> contentAddons() {
