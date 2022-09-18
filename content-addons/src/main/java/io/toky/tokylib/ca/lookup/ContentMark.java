@@ -4,12 +4,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-/*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 package io.toky.tokylib.ca.lookup;
 
 import java.util.function.Consumer;
@@ -17,11 +11,11 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * Class representing mark on some native data.
- * @param <T> type
- * @param <S> Native data.
+ * A class representing mark on a "native" data.
+ * @param <T> A type of {@link io.toky.tokylib.ca.annotation.ContentAddon} annotated class.
+ * @param <S> A native data.
  */
-public interface TypeMark<T, S> {
+public interface ContentMark<T, S> {
 	/**
 	 * Adds some identifier/"mark" for a native type, so {@link #matches(Object)} ()} will produce true for a native object on the next server load.
 	 * @param n Native data.
@@ -41,8 +35,8 @@ public interface TypeMark<T, S> {
 	 */
 	T convert(S n);
 
-	static <T, S> TypeMark<T, S> create(Function<? super S, ? extends T> convert, Predicate<S> matches, Consumer<? super S> mark) {
-		return new TypeMark<>() {
+	static <T, S> ContentMark<T, S> create(Function<? super S, ? extends T> convert, Predicate<S> matches, Consumer<? super S> mark) {
+		return new ContentMark<>() {
 			@Override
 			public void mark(S n) {
 				mark.accept(n);

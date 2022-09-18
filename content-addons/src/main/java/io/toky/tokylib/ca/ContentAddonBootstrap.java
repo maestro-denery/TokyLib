@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.google.common.reflect.ClassPath;
 
-import io.toky.tokylib.ca.holder.ContentAddonContainer;
+import io.toky.tokylib.ca.container.ContentAddonContainer;
 import io.toky.tokylib.ca.lookup.DataLookerUpper;
 import io.toky.tokylib.ca.type.ContentAddonRegistry;
 import io.toky.tokylib.ca.annotation.ContentAddon;
@@ -20,13 +20,13 @@ import io.toky.tokylib.ca.annotation.ContentAddon;
  * Bootstrap where you initialize all work of your Data Addons and its registries.
  */
 public final class ContentAddonBootstrap {
-	private GroupContainer container;
+	private InfrastructureContainer container;
 
-	public void setContainer(GroupContainer container) {
+	public void setContainer(InfrastructureContainer container) {
 		this.container = container;
 	}
 
-	public GroupContainer getContainer() {
+	public InfrastructureContainer getContainer() {
 		return container;
 	}
 
@@ -41,10 +41,12 @@ public final class ContentAddonBootstrap {
 		ContentAddonBootstrap.connectContentAddons(container);
 	}
 
-	public void bootstrapSystem(final ContentAddonRegistry contentAddonRegistry, final ContentAddonContainer tih, final DataLookerUpper dataLookerUpper) {
-		this.container.registerTR(contentAddonRegistry);
-		this.container.registerTIH(tih);
-		this.container.registerLookuper(dataLookerUpper);
+	public void bootstrapSystem(final ContentAddonRegistry contentAddonRegistry, final ContentAddonContainer contentAddonContainer, final DataLookerUpper dataLookerUpper) {
+		this.container.registerContentAddonRegistry(contentAddonRegistry);
+		this.container.registerContentAddonContainer(contentAddonContainer);
+		this.container.registerLookerUpper(dataLookerUpper);
+		contentAddonContainer.setContentAddonRegistry(contentAddonRegistry);
+		dataLookerUpper.setContentAddonContainer(contentAddonContainer);
 	}
 
 	/**
@@ -68,14 +70,14 @@ public final class ContentAddonBootstrap {
 		}
 	}
 
-	public static void connectGroupsInContainer(GroupContainer repository) {
-		final ContentAddonContainer tih = repository.tih();
-		repository.lookuper().setTIH(tih);
-		tih.setTypeRegistry(repository.typeRegistry());
+	public static void connectGroupsInContainer(InfrastructureContainer repository) {
+		final ContentAddonContainer tih = repository.contentAddonContainer();
+		repository.dataLookerUpper().setContentAddonContainer(tih);
+		tih.setContentAddonRegistry(repository.contentAddonRegistry());
 	}
 
-	public static void connectContentAddons(GroupContainer repository) {
-		final ContentAddonRegistry contentAddonRegistry = repository.typeRegistry();
+	public static void connectContentAddons(InfrastructureContainer repository) {
+		final ContentAddonRegistry contentAddonRegistry = repository.contentAddonRegistry();
 		for (Class<?> value : repository.contentAddons().values()) {
 			contentAddonRegistry.register(value);
 		}

@@ -7,7 +7,7 @@
 package io.toky.tokylib.ca.annotation;
 
 import io.toky.tokylib.ca.ContentAddonBootstrap;
-import io.toky.tokylib.ca.holder.ContentAddonContainer;
+import io.toky.tokylib.ca.container.ContentAddonContainer;
 import io.toky.tokylib.ca.lookup.ContentLookup;
 import io.toky.tokylib.ca.lookup.DataLookerUpper;
 import io.toky.tokylib.ca.type.ContentAddonRegistry;

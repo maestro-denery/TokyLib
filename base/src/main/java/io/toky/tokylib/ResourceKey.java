@@ -4,6 +4,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ResourceKey<T> {
@@ -26,10 +27,6 @@ public final class ResourceKey<T> {
         return ResourceKey.create(keyed.key(), entryKey);
     }
 
-    public static <T> ResourceKey<? extends ResourceKeyed<T>> createResourceKeyedKey(Key key) {
-        return ResourceKey.create(ResourceKey.ROOT, key);
-    }
-
     private static <T> ResourceKey<T> create(Key registryKey, Key entryKey) {
         return (ResourceKey<T>) ResourceKey.VALUES.computeIfAbsent(registryKey + ":" + entryKey, s -> new ResourceKey<>(registryKey, entryKey));
     }
@@ -45,5 +42,18 @@ public final class ResourceKey<T> {
     @Override
     public String toString() {
         return "ResourceKey[" + registryKey + " / " + entryKey + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResourceKey<?> that = (ResourceKey<?>) o;
+        return Objects.equals(registryKey, that.registryKey) && Objects.equals(entryKey, that.entryKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(registryKey, entryKey);
     }
 }

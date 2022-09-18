@@ -7,10 +7,8 @@ package io.toky.tokylib.ca.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import io.toky.tokylib.ca.holder.ContentAddonContainer;
+import io.toky.tokylib.ca.container.ContentAddonContainer;
 import io.toky.tokylib.ca.lookup.DataLookerUpper;
-import io.toky.tokylib.ca.test.registries.DummyHolder;
-import io.toky.tokylib.ca.test.registries.DummyTypeRegistry;
 import io.toky.tokylib.ca.type.ContentAddonRegistry;
 import net.kyori.adventure.key.Key;
 import org.junit.jupiter.api.AfterEach;
@@ -18,8 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.toky.tokylib.ca.ContentAddonBootstrap;
-import io.toky.tokylib.ca.GroupContainer;
-import io.toky.tokylib.ca.test.registries.subpkg.DummyController;
+import io.toky.tokylib.ca.InfrastructureContainer;
 
 class BootstrapTest {
 	ContentAddonBootstrap bootstrap = new ContentAddonBootstrap();
@@ -27,9 +24,9 @@ class BootstrapTest {
 
 	@BeforeEach
 	void before() {
-		bootstrap.setContainer(new GroupContainer());
+		bootstrap.setContainer(new InfrastructureContainer());
 		bootstrap.bootstrapSystem(ContentAddonRegistry.create(key), ContentAddonContainer.create(), DataLookerUpper.create());
-		bootstrap.bootstrapContentAddons("io.toky.tokylib.ca.test.dummies");
+		bootstrap.bootstrapContentAddons(getClass().getClassLoader(), "io.toky.tokylib.ca.test.dummies");
 	}
 
 	@AfterEach
@@ -39,16 +36,16 @@ class BootstrapTest {
 
 	@Test
 	void checkTypeRegistryInstance() {
-		assertNotNull(bootstrap.getRegistry(DummyTypeRegistry.class));
+		assertNotNull(bootstrap.getContainer().contentAddonRegistry());
 	}
 
 	@Test
 	void checkTypeHolderInstance() {
-		assertNotNull(bootstrap.getRegistry(DummyHolder.class));
+		assertNotNull(bootstrap.getContainer().contentAddonContainer());
 	}
 
 	@Test
 	void checkStoreLoadControllerInstance() {
-		assertNotNull(bootstrap.getRegistry(DummyController.class));
+		assertNotNull(bootstrap.getContainer().dataLookerUpper());
 	}
 }

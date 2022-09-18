@@ -6,12 +6,15 @@
 
 package io.toky.tokylib.ca.lookup;
 
+import com.mojang.serialization.DynamicOps;
 import io.toky.tokylib.ResourceKey;
 import io.toky.tokylib.ca.annotation.ContentAddon;
-import io.toky.tokylib.ca.holder.ContentAddonContainer;
+import io.toky.tokylib.ca.container.ContentAddonContainer;
 import io.toky.tokylib.ca.lookup.impl.DataLookerUpperImpl;
+import io.toky.tokylib.io.IO;
 import net.kyori.adventure.key.Key;
 
+import java.io.File;
 import java.util.Optional;
 
 /**
@@ -47,12 +50,12 @@ public abstract class DataLookerUpper {
 	/**
 	 * Stores "custom" data from every instance in specified holders by specified type.
 	 */
-	public abstract void store();
+	public abstract <D> void store(File dataFile, IO<D> io, DynamicOps<D> ops);
 
 	/**
 	 * Loads "custom" data in every instance in specified holders by specified type.
 	 */
-	public abstract void load();
+	public abstract <D> void load(File dataFile, IO<D> io, DynamicOps<D> ops);
 
 
 	public abstract <T> void storeStandaloneFile(ResourceKey<T> identifier);
@@ -63,19 +66,19 @@ public abstract class DataLookerUpper {
 	 * Obtain Marks by data addon types associated with them.
 	 * @return mark associated with this Data Addon type.
 	 */
-	public abstract <T, S> Optional<TypeMark<T, S>> getCustomMark(ResourceKey<T> identifier);
+	public abstract <T, S> Optional<ContentMark<T, S>> getCustomMark(ResourceKey<T> identifier);
 
 	/**
 	 * Adds holder to this controller.
 	 * @param typeInstanceHolder holder you want to add.
 	 */
-	public abstract void setTIH(ContentAddonContainer typeInstanceHolder);
+	public abstract void setContentAddonContainer(ContentAddonContainer typeInstanceHolder);
 
 	/**
 	 * Obtains holders added in this {@link DataLookerUpper}
 	 * @return All added holders.
 	 */
-	public abstract ContentAddonContainer getTypeHolder();
+	public abstract ContentAddonContainer getContentAddonContainer();
 
 	public static DataLookerUpper create() {
 		return new DataLookerUpperImpl();

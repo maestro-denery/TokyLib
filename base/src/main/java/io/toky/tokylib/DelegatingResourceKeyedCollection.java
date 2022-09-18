@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Spliterator;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -11,13 +12,13 @@ import java.util.stream.Stream;
 
 public class DelegatingResourceKeyedCollection<T> implements Collection<T>, ResourceKeyed<T> {
     protected final Collection<T> collection;
-    protected final ResourceKey<? extends ResourceKeyed<T>> key;
+    protected final ResourceKey<T> key;
 
-    public static <T> DelegatingResourceKeyedCollection<T> create(ResourceKey<? extends ResourceKeyed<T>> key, Collection<T> c) {
+    public static <T> DelegatingResourceKeyedCollection<T> create(ResourceKey<T> key, Collection<T> c) {
         return new DelegatingResourceKeyedCollection<>(key, c);
     }
 
-    protected DelegatingResourceKeyedCollection(ResourceKey<? extends ResourceKeyed<T>> key, Collection<T> collection) {
+    protected DelegatingResourceKeyedCollection(ResourceKey<T> key, Collection<T> collection) {
         this.key = key;
         this.collection = collection;
     }
@@ -116,7 +117,22 @@ public class DelegatingResourceKeyedCollection<T> implements Collection<T>, Reso
     }
 
     @Override
-    public ResourceKey<? extends ResourceKeyed<T>> key() {
+    public ResourceKey<T> key() {
         return this.key;
+    }
+
+    @Override
+    public String toString() {
+        return collection.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return collection.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(collection, key);
     }
 }

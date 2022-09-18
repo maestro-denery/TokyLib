@@ -46,7 +46,7 @@ public abstract class ContentAddonRegistry implements Keyed {
 	 * @return {@link ContentAddon} class.
 	 */
 	@NotNull
-	public abstract <T> Class<T> getContentAddonType(@NotNull ResourceKey<T> key);
+	public abstract <T> Class<T> getContentAddonClass(@NotNull ResourceKey<T> key);
 
 	@NotNull
 	public abstract <T, D> ContentLookup<T, D> getContentLookup(@NotNull ResourceKey<T> identifier);

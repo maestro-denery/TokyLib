@@ -1,3 +1,9 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 package io.toky.tokylib.ca.lookup;
 
 import com.mojang.datafixers.util.Pair;
@@ -6,9 +12,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import io.toky.tokylib.ResourceKey;
-import io.toky.tokylib.ResourceKeyed;
-import io.toky.tokylib.ca.holder.TIHCodecs;
-import io.toky.tokylib.ca.holder.ContentAddonContainer;
+import io.toky.tokylib.ca.container.ContentAddonContainer;
+import io.toky.tokylib.ca.type.ContentAddonCodecs;
 import io.toky.tokylib.io.IO;
 
 import java.io.File;
@@ -25,28 +30,15 @@ public interface ContentLookup<T, S> {
 
     Codec<T> codec();
 
-    <D> Optional<StandaloneFileOps<T, D>> standaloneFileOps();
+    Optional<StandaloneFileOps<T, ?>> standaloneFileOps(ResourceKey<T> resourceKey);
 
-    final class StandaloneFileOps<T, D> {
-        private final IO<D> io;
-        private final Codec<T> elementCodec;
-        private final DynamicOps<D> ops;
-        private final File dataFile;
-        final Codec<ContentAddonContainer.TIHEntry<T>> standaloneFileCodec;
-        public StandaloneFileOps(IO<D> io, ResourceKey<? extends ResourceKeyed<T>> key, Codec<T> elementCodec, DynamicOps<D> ops, File dataFile) {
-            this.io = io;
-            this.elementCodec = elementCodec;
-            this.ops = ops;
-            this.dataFile = dataFile;
-            this.standaloneFileCodec = TIHCodecs.standaloneFileCodec(key, elementCodec).getSecond();
+    record StandaloneFileOps<T, D>(ContentLookup<T, ?> lookup, IO<D> io, DynamicOps<D> ops, File dataFile) {
+        public DataResult<ContentAddonContainer.Entry<T>> read(final ResourceKey<T> resourceKey) {
+            return io.read(dataFile).flatMap(dataFormat -> ContentAddonCodecs.standaloneFileCodec(resourceKey, lookup.codec()).parse(this.ops, dataFormat));
         }
 
-        public DataResult<ContentAddonContainer.TIHEntry<T>> read() {
-            return io.read(dataFile).flatMap(dataFormat -> standaloneFileCodec.parse(this.ops, dataFormat));
-        }
-
-        public DataResult<Unit> write(final ContentAddonContainer.TIHEntry<T> t) {
-            return this.standaloneFileCodec.encodeStart(ops, t).flatMap(data -> io.write(data, dataFile));
+        public DataResult<Unit> write(final ResourceKey<T> resourceKey, final ContentAddonContainer.Entry<T> t) {
+            return ContentAddonCodecs.standaloneFileCodec(resourceKey, lookup.codec()).encodeStart(ops, t).flatMap(data -> io.write(data, dataFile));
         }
     }
 }

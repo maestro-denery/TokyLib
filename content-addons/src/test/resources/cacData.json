@@ -1,0 +1,1 @@
+{"test:dummy2":{"type":"test:dummy2","value":[{"someInt":134,"someNativeInt":152},{"someInt":134,"someNativeInt":152}]},"test:dummy":{"type":"test:dummy","value":[{"someString":"non native shit","someNativeString":"native shit"},{"someString":"non native shit","someNativeString":"native shit"}]}}

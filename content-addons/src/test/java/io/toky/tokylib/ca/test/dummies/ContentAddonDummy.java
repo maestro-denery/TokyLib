@@ -5,25 +5,41 @@
 
 package io.toky.tokylib.ca.test.dummies;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.toky.tokylib.ca.annotation.ContentAddon;
 
 @ContentAddon(
 		identifier = "test:dummy",
 		lookup = ContentAddonDummyLookup.class
 )
-public class ContentAddonDummy {
+public final class ContentAddonDummy {
 	private String someString;
-	private String someNativeStringData;
+	private String someNativeString;
 
-	public String getSomeString() {
+	public static final Codec<ContentAddonDummy> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.STRING.fieldOf("someString").forGetter(ContentAddonDummy::someString),
+			Codec.STRING.fieldOf("someNativeString").forGetter(ContentAddonDummy::someNativeString)
+			).apply(instance, (s, s2) -> {
+				ContentAddonDummy contentAddonDummy = new ContentAddonDummy();
+				contentAddonDummy.setSomeString(s);
+				contentAddonDummy.setSomeNativeString(s2);
+				return contentAddonDummy;
+			}));
+
+	public String someString() {
 		return someString;
 	}
 
-	public String getSomeNativeStringData() {
-		return someNativeStringData;
+	public void setSomeString(String someString) {
+		this.someString = someString;
 	}
 
-	public void setSomeNativeStringData(String someNativeStringData) {
-		this.someNativeStringData = someNativeStringData;
+	public String someNativeString() {
+		return someNativeString;
+	}
+
+	public void setSomeNativeString(String someNativeString) {
+		this.someNativeString = someNativeString;
 	}
 }

@@ -1,3 +1,9 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 package io.toky.tokylib.ca.type.impl;
 
 import com.google.common.collect.BiMap;
@@ -54,7 +60,7 @@ public class ContentAddonRegistryImpl extends ContentAddonRegistry {
     }
 
     @Override
-    public <T> @NotNull Class<T> getContentAddonType(@NotNull ResourceKey<T> identifier) {
+    public <T> @NotNull Class<T> getContentAddonClass(@NotNull ResourceKey<T> identifier) {
         if (registryBiMap.containsKey(identifier.entryKey()))
             return (Class<T>) registryBiMap.get(identifier.entryKey());
         else throw new RegistryException("This TypeRegistry doesn't contain class with such resourcekey: " + identifier);
