@@ -22,7 +22,8 @@ public class ContentAddonDummyLookup implements ReferencedContentLookup<ContentA
 	private final File dummyFile = new File("src/test/resources/dummyData.json");
 
 	private final Collection<NativeDummy> nativeDummiesContainer = Lists.newArrayList(
-			new NativeDummy("native1")
+			new NativeDummy("native1"),
+			new NativeDummy("native2")
 	);
 
 	@Override

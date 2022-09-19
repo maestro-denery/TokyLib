@@ -50,14 +50,20 @@ class ContentAddonCodecsTest {
     void checkStore() {
         for (int i = 0; i < 2; i++) {
             ContentAddonDummy contentAddonDummy = bootstrap.getContainer().contentAddonContainer().newInstance(resourceKey);
-            contentAddonDummy.setSomeString("non native shit");
-            contentAddonDummy.setSomeNativeString("native shit");
+            contentAddonDummy.setSomeString("non native stuff");
+            contentAddonDummy.setSomeNativeString("native stuff");
         }
         for (int i = 0; i < 2; i++) {
             ContentAddonDummy2 contentAddonDummy2 = bootstrap.getContainer().contentAddonContainer().newInstance(resourceKey2);
-            contentAddonDummy2.setSomeInt(134);
-            contentAddonDummy2.setSomeNativeInt(152);
+            contentAddonDummy2.setSomeInt(228);
+            contentAddonDummy2.setSomeNativeInt(42069);
         }
         bootstrap.getContainer().dataLookerUpper().store(new File("src/test/resources/cacData.json"), JsonIO.INSTANCE, JsonOps.INSTANCE);
+    }
+
+    @Test
+    void checkLoad() {
+        bootstrap.getContainer().dataLookerUpper().load(new File("src/test/resources/cacData.json"), JsonIO.INSTANCE, JsonOps.INSTANCE);
+        System.out.println(bootstrap.getContainer().contentAddonContainer().getInstancesInternalMap());
     }
 }

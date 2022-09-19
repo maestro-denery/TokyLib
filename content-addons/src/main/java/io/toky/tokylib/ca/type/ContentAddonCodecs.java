@@ -35,7 +35,7 @@ public final class ContentAddonCodecs {
         return mapCodec.xmap(kvMap -> {
             return ContentAddonContainerImpl.createFromMap((Map<ResourceKey<?>, ContentAddonContainer.Entry<?>>) kvMap);
         }, contentAddonContainer -> {
-            return (Map<K, V>) ((ContentAddonContainerImpl) contentAddonContainer).getInstancesInternalMap();
+            return (Map<K, V>) contentAddonContainer.getInstancesInternalMap();
         });
     }
 

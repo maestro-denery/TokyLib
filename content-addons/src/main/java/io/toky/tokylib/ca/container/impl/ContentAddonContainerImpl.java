@@ -7,7 +7,6 @@
 package io.toky.tokylib.ca.container.impl;
 
 import io.toky.tokylib.ResourceKey;
-import io.toky.tokylib.ResourceKeyed;
 import io.toky.tokylib.ca.RegistryException;
 import io.toky.tokylib.ca.container.ContentAddonContainer;
 import io.toky.tokylib.ca.type.ContentAddonRegistry;
@@ -90,11 +89,13 @@ public class ContentAddonContainerImpl extends ContentAddonContainer {
 
     @Override
     public <T> @NotNull Entry<T> getHeld(@NotNull Class<T> contentAddonType) {
+        this.createEntryIfAbsent(contentAddonRegistry.getKey(contentAddonType));
         return (Entry<T>) this.instances.get(contentAddonRegistry.getKey(contentAddonType));
     }
 
     @Override
     public <T> @NotNull Entry<T> getHeld(@NotNull ResourceKey<T> identifier) {
+        this.createEntryIfAbsent(identifier);
         return (Entry<T>) this.instances.get(identifier);
     }
 

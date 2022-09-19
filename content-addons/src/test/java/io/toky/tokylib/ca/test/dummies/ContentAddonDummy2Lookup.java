@@ -17,7 +17,8 @@ public class ContentAddonDummy2Lookup implements ReferencedContentLookup<Content
     private final File dummyFile = new File("src/test/resources/dummyData2.json");
 
     private final Collection<ContentAddonDummy2Lookup.NativeDummy> nativeDummiesContainer = Lists.newArrayList(
-            new ContentAddonDummy2Lookup.NativeDummy(12)
+            new ContentAddonDummy2Lookup.NativeDummy(12),
+            new NativeDummy(14)
     );
 
     @Override
